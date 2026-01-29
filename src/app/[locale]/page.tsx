@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useTranslations } from 'next-intl';
+import { useAuth } from '@/hooks/use-auth';
 
 export default function Home() {
   const t = useTranslations('Home');
+  const { user } = useAuth();
   const heroImage = PlaceHolderImages.find((img) => img.id === 'hero');
 
   return (
@@ -20,12 +22,20 @@ export default function Home() {
           </h1>
           <p className="text-lg text-muted-foreground">{t('subtitle')}</p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <Button asChild size="lg">
-              <Link href="/signup">{t('getStarted')}</Link>
-            </Button>
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/login">{t('accessDashboard')}</Link>
-            </Button>
+            {user ? (
+              <Button asChild size="lg">
+                <Link href="/dashboard">{t('accessDashboard')}</Link>
+              </Button>
+            ) : (
+              <>
+                <Button asChild size="lg">
+                  <Link href="/signup">{t('getStarted')}</Link>
+                </Button>
+                <Button asChild variant="secondary" size="lg">
+                  <Link href="/login">{t('accessDashboard')}</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
         <div className="relative">
