@@ -32,4 +32,11 @@ export const users: User[] = [
     role: 'user',
     iframeUrl: null,
   },
+  {
+    id: '4',
+    email: 'moritz@organicconcepts.de',
+    password: 'password',
+    role: 'admin',
+    iframeUrl: null,
+  },
 ];
