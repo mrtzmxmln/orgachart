@@ -14,6 +14,7 @@ import { AssignIframeDialog } from './assign-iframe-dialog';
 import type { User } from '@/lib/data';
 import { Card } from '../ui/card';
 import { useTranslations } from 'next-intl';
+import { EditUserDialog } from './edit-user-dialog';
 
 export function UserTable() {
   const t = useTranslations('UserTable');
@@ -57,7 +58,10 @@ export function UserTable() {
                 )}
               </TableCell>
               <TableCell className="text-right">
-                <AssignIframeDialog user={user} />
+                <div className="flex justify-end items-center gap-2">
+                  <AssignIframeDialog user={user} />
+                  <EditUserDialog user={user} />
+                </div>
               </TableCell>
             </TableRow>
           ))}

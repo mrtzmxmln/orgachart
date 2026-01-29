@@ -33,7 +33,7 @@
     "noChartDescription": "There is currently no chart assigned to your account. Please contact an administrator."
   },
   "AssignIframeDialog": {
-    "edit": "Edit",
+    "assignChart": "Assign Chart",
     "title": "Assign Chart",
     "description": "Set or update the Chart URL for {name}. Leave empty to remove.",
     "formLabel": "Chart URL",
@@ -116,5 +116,25 @@
     "notLoggedInError": "You must be logged in to do this.",
     "emailInUseError": "This email is already in use by another account.",
     "genericError": "An unexpected error occurred."
+  },
+  "EditUserDialog": {
+    "editUser": "Edit User",
+    "title": "Edit User Information",
+    "description": "Update the details for {name}. Click save when you're done.",
+    "firstNameLabel": "First Name",
+    "lastNameLabel": "Last Name",
+    "emailLabel": "Email",
+    "roleLabel": "Role",
+    "roleUser": "User",
+    "roleAdmin": "Admin",
+    "save": "Save Changes",
+    "successTitle": "User Updated",
+    "successDescription": "The information for {name} has been successfully updated.",
+    "errorTitle": "Update Failed",
+    "emailInUseError": "This email is already in use by another account.",
+    "genericError": "An unexpected error occurred.",
+    "firstNameValidation": "First name is required.",
+    "lastNameValidation": "Last name is required.",
+    "emailValidation": "Please enter a valid email address."
   }
 }

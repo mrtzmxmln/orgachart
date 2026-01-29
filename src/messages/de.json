@@ -33,7 +33,7 @@
     "noChartDescription": "Ihrem Konto ist derzeit kein Diagramm zugewiesen. Bitte kontaktieren Sie einen Administrator."
   },
   "AssignIframeDialog": {
-    "edit": "Bearbeiten",
+    "assignChart": "Diagramm zuweisen",
     "title": "Diagramm zuweisen",
     "description": "Legen Sie die Diagramm-URL für {name} fest oder aktualisieren Sie sie. Leer lassen, um sie zu entfernen.",
     "formLabel": "Diagramm-URL",
@@ -116,5 +116,25 @@
     "notLoggedInError": "Sie müssen hierfür angemeldet sein.",
     "emailInUseError": "Diese E-Mail wird bereits von einem anderen Konto verwendet.",
     "genericError": "Ein unerwarteter Fehler ist aufgetreten."
+  },
+  "EditUserDialog": {
+    "editUser": "Benutzer bearbeiten",
+    "title": "Benutzerinformationen bearbeiten",
+    "description": "Aktualisieren Sie die Details für {name}. Klicken Sie auf 'Speichern', wenn Sie fertig sind.",
+    "firstNameLabel": "Vorname",
+    "lastNameLabel": "Nachname",
+    "emailLabel": "E-Mail",
+    "roleLabel": "Rolle",
+    "roleUser": "Benutzer",
+    "roleAdmin": "Admin",
+    "save": "Änderungen speichern",
+    "successTitle": "Benutzer aktualisiert",
+    "successDescription": "Die Informationen für {name} wurden erfolgreich aktualisiert.",
+    "errorTitle": "Aktualisierung fehlgeschlagen",
+    "emailInUseError": "Diese E-Mail wird bereits von einem anderen Konto verwendet.",
+    "genericError": "Ein unerwarteter Fehler ist aufgetreten.",
+    "firstNameValidation": "Vorname ist erforderlich.",
+    "lastNameValidation": "Nachname ist erforderlich.",
+    "emailValidation": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
   }
 }

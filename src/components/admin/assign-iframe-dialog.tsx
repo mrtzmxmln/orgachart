@@ -26,7 +26,7 @@ import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/use-auth';
 import type { User } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Pencil } from 'lucide-react';
+import { Loader2, Network } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 type AssignIframeDialogProps = {
@@ -80,8 +80,8 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
-          <Pencil className="mr-2 h-4 w-4" />
-          {t('edit')}
+          <Network className="mr-2 h-4 w-4" />
+          {t('assignChart')}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

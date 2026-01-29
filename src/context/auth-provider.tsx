@@ -15,6 +15,13 @@ type UpdateUserData = {
   email: string;
 };
 
+type UpdateUserByAdminData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: 'user' | 'admin';
+};
+
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<User | null>;
@@ -24,6 +31,10 @@ interface AuthContextType {
   updateUserProfile: (
     userId: string,
     data: UpdateUserData
+  ) => Promise<{ success: boolean; message: string }>;
+  updateUserByAdmin: (
+    userId: string,
+    data: UpdateUserByAdminData
   ) => Promise<{ success: boolean; message: string }>;
   completeInitialSetup: (
     userId: string,
@@ -155,6 +166,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     },
     [user]
   );
+
+  const updateUserByAdmin = useCallback(
+    async (
+      userId: string,
+      data: UpdateUserByAdminData
+    ): Promise<{ success: boolean; message: string }> => {
+      // Check for email uniqueness if it has changed
+      if (usersData.some((u) => u.email === data.email && u.id !== userId)) {
+        return { success: false, message: 'emailInUseError' };
+      }
+
+      usersData = usersData.map((u) =>
+        u.id === userId ? { ...u, ...data } : u
+      );
+      setUsers([...usersData]);
+
+      if (user && user.id === userId) {
+        const updatedCurrentUser = { ...user, ...data };
+        setUser(updatedCurrentUser);
+        localStorage.setItem('user', JSON.stringify(updatedCurrentUser));
+      }
+      return { success: true, message: 'success' };
+    },
+    [user]
+  );
   
   const completeInitialSetup = useCallback(
     async (
@@ -190,6 +226,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         allUsers: users,
         updateUserIframe,
         updateUserProfile,
+        updateUserByAdmin,
         completeInitialSetup,
       }}
     >
