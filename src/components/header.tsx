@@ -164,19 +164,6 @@ export default function Header() {
               </DropdownMenu>
             ) : (
               <div className="flex items-center gap-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="gap-1">
-                      <Globe />
-                      <span className="hidden md:inline">
-                        {locale.toUpperCase()}
-                      </span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    {languageSwitcherItems}
-                  </DropdownMenuContent>
-                </DropdownMenu>
                 <Button asChild variant="ghost" size="sm">
                   <Link href="/login">
                     <LogIn className="md:mr-2" />

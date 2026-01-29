@@ -11,6 +11,7 @@ export const pathnames = {
   '/admin': '/admin',
   '/profile': '/profile',
   '/complete-setup': '/complete-setup',
+  '/imprint': '/imprint',
 } satisfies Record<string, any>;
 
 export const {Link, redirect, usePathname, useRouter} =

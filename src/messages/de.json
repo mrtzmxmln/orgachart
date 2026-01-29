@@ -136,5 +136,21 @@
     "firstNameValidation": "Vorname ist erforderlich.",
     "lastNameValidation": "Nachname ist erforderlich.",
     "emailValidation": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
+  },
+  "Footer": {
+    "imprint": "Impressum"
+  },
+  "ImprintPage": {
+    "title": "Impressum",
+    "responsibleTitle": "Angaben gemäß § 5 TMG",
+    "contactTitle": "Kontakt",
+    "phone": "Telefon",
+    "representationTitle": "Vertreten durch",
+    "representedBy": "Vertreten durch",
+    "registerTitle": "Registereintrag",
+    "registerCourt": "Registergericht",
+    "registerNumber": "Registernummer",
+    "vatTitle": "Umsatzsteuer-ID",
+    "vatId": "Umsatzsteuer-Identifikationsnummer gemäß §27a Umsatzsteuergesetz"
   }
 }

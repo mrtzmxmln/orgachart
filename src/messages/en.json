@@ -136,5 +136,21 @@
     "firstNameValidation": "First name is required.",
     "lastNameValidation": "Last name is required.",
     "emailValidation": "Please enter a valid email address."
+  },
+  "Footer": {
+    "imprint": "Imprint"
+  },
+  "ImprintPage": {
+    "title": "Imprint",
+    "responsibleTitle": "Information according to § 5 TMG",
+    "contactTitle": "Contact",
+    "phone": "Phone",
+    "representationTitle": "Representation",
+    "representedBy": "Represented by",
+    "registerTitle": "Register Entry",
+    "registerCourt": "Registering court",
+    "registerNumber": "Registration number",
+    "vatTitle": "VAT ID",
+    "vatId": "VAT identification number according to §27a German VAT act"
   }
 }

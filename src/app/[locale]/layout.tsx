@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import '../globals.css';
 import { AuthProvider } from '@/context/auth-provider';
 import Header from '@/components/header';
+import Footer from '@/components/footer';
 import { Toaster } from '@/components/ui/toaster';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
@@ -36,6 +37,7 @@ export default async function LocaleLayout({
             <div className="flex flex-col h-full">
               <Header />
               <main className="flex-1">{children}</main>
+              <Footer />
             </div>
             <Toaster />
           </AuthProvider>
