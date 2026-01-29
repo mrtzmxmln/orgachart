@@ -9,12 +9,26 @@ import React, {
 import { useRouter } from '@/navigation';
 import { users as mockUsers, type User } from '@/lib/data';
 
+type UpdateUserData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
+
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<User | null>;
   logout: () => void;
-  register: (email: string, password: string) => Promise<boolean>;
+  register: (email: string, password: string) => Promise<User | null>;
   updateUserIframe: (userId: string, iframeUrl: string | null) => void;
+  updateUserProfile: (
+    userId: string,
+    data: UpdateUserData
+  ) => Promise<{ success: boolean; message: string }>;
+  completeInitialSetup: (
+    userId: string,
+    data: { firstName: string; lastName: string }
+  ) => Promise<boolean>;
   allUsers: User[];
 }
 
@@ -37,7 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (storedUser) {
         const parsedUser: User = JSON.parse(storedUser);
         // re-validate user against our mock data
-        const validUser = users.find((u) => u.id === parsedUser.id);
+        const validUser = usersData.find((u) => u.id === parsedUser.id);
         if (validUser) {
           setUser(validUser);
         } else {
@@ -53,19 +67,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(
-    async (email: string, password: string): Promise<boolean> => {
-      const foundUser = users.find(
+    async (email: string, password: string): Promise<User | null> => {
+      const foundUser = usersData.find(
         (u) => u.email === email && u.password === password
       );
       if (foundUser) {
         const { password: _, ...userToStore } = foundUser;
         setUser(userToStore);
         localStorage.setItem('user', JSON.stringify(userToStore));
-        return true;
+        return userToStore;
       }
-      return false;
+      return null;
     },
-    [users]
+    []
   );
 
   const logout = useCallback(() => {
@@ -75,9 +89,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [router]);
 
   const register = useCallback(
-    async (email: string, password: string): Promise<boolean> => {
-      if (users.some((u) => u.email === email)) {
-        return false; // User already exists
+    async (email: string, password: string): Promise<User | null> => {
+      if (usersData.some((u) => u.email === email)) {
+        return null; // User already exists
       }
       const newUser: User = {
         id: String(Date.now()),
@@ -85,6 +99,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         password,
         role: 'user',
         iframeUrl: null,
+        firstName: '',
+        lastName: '',
+        hasCompletedSetup: false,
       };
       
       usersData.push(newUser);
@@ -93,9 +110,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { password: _, ...userToStore } = newUser;
       setUser(userToStore);
       localStorage.setItem('user', JSON.stringify(userToStore));
-      return true;
+      return userToStore;
     },
-    [users]
+    []
   );
 
   const updateUserIframe = useCallback(
@@ -113,6 +130,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     },
     [user]
   );
+  
+  const updateUserProfile = useCallback(
+    async (
+      userId: string,
+      data: UpdateUserData
+    ): Promise<{ success: boolean; message: string }> => {
+      // Check for email uniqueness if it has changed
+      if (usersData.some((u) => u.email === data.email && u.id !== userId)) {
+        return { success: false, message: 'emailInUseError' };
+      }
+
+      usersData = usersData.map((u) =>
+        u.id === userId ? { ...u, ...data } : u
+      );
+      setUsers(usersData);
+
+      if (user && user.id === userId) {
+        const updatedCurrentUser = { ...user, ...data };
+        setUser(updatedCurrentUser);
+        localStorage.setItem('user', JSON.stringify(updatedCurrentUser));
+      }
+      return { success: true, message: 'success' };
+    },
+    [user]
+  );
+  
+  const completeInitialSetup = useCallback(
+    async (
+      userId: string,
+      data: { firstName: string; lastName: string }
+    ): Promise<boolean> => {
+      usersData = usersData.map((u) =>
+        u.id === userId ? { ...u, ...data, hasCompletedSetup: true } : u
+      );
+      setUsers(usersData);
+
+      if (user && user.id === userId) {
+        const updatedCurrentUser = { ...user, ...data, hasCompletedSetup: true };
+        setUser(updatedCurrentUser);
+        localStorage.setItem('user', JSON.stringify(updatedCurrentUser));
+      }
+      return true;
+    },
+    [user]
+  );
 
   if (loading) {
     return null; // or a loading spinner
@@ -127,6 +189,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         register,
         allUsers: users,
         updateUserIframe,
+        updateUserProfile,
+        completeInitialSetup,
       }}
     >
       {children}

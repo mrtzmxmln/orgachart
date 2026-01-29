@@ -29,6 +29,10 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2, Pencil } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+type AssignIframeDialogProps = {
+  user: User;
+}
+
 export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
   const t = useTranslations('AssignIframeDialog');
   const [open, setOpen] = useState(false);
@@ -68,7 +72,7 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
 
     toast({
       title: t('successTitle'),
-      description: t('successDescription', { email: user.email }),
+      description: t('successDescription', { name: `${user.firstName} ${user.lastName}` }),
     });
   }
 
@@ -85,7 +89,7 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
           <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>
             {t('description', {
-              email: <span className="font-medium">{user.email}</span>,
+              name: <span className="font-medium">{user.firstName} {user.lastName}</span>,
             })}
           </DialogDescription>
         </DialogHeader>

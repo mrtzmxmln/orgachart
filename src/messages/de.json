@@ -5,7 +5,8 @@
     "admin": "Admin",
     "logout": "Abmelden",
     "login": "Anmelden",
-    "signUp": "Registrieren"
+    "signUp": "Registrieren",
+    "profile": "Profil"
   },
   "LanguageSwitcher": {
     "placeholder": "Sprache",
@@ -26,7 +27,7 @@
   },
   "Dashboard": {
     "title": "Dashboard",
-    "welcome": "Willkommen, {email}. Hier ist Ihr zugewiesener Inhalt.",
+    "welcome": "Willkommen, {name}. Hier ist Ihr zugewiesener Inhalt.",
     "chartTitle": "Benutzerspezifisches Diagramm",
     "noChartTitle": "Kein Diagramm zugewiesen",
     "noChartDescription": "Ihrem Konto ist derzeit kein Diagramm zugewiesen. Bitte kontaktieren Sie einen Administrator."
@@ -34,14 +35,15 @@
   "AssignIframeDialog": {
     "edit": "Bearbeiten",
     "title": "Diagramm zuweisen",
-    "description": "Legen Sie die Diagramm-URL für {email} fest oder aktualisieren Sie sie. Leer lassen, um sie zu entfernen.",
+    "description": "Legen Sie die Diagramm-URL für {name} fest oder aktualisieren Sie sie. Leer lassen, um sie zu entfernen.",
     "formLabel": "Diagramm-URL",
     "formValidation": "Bitte geben Sie eine gültige URL ein.",
     "save": "Änderungen speichern",
     "successTitle": "Erfolg",
-    "successDescription": "Diagramm-URL für {email} wurde aktualisiert."
+    "successDescription": "Diagramm-URL für {name} wurde aktualisiert."
   },
   "UserTable": {
+    "user": "Benutzer",
     "email": "E-Mail",
     "role": "Rolle",
     "chartUrl": "Diagramm-URL",
@@ -77,5 +79,42 @@
     "successDescription": "Ihr Konto wurde erstellt.",
     "errorTitle": "Registrierung fehlgeschlagen",
     "errorDescription": "Ein Konto mit dieser E-Mail existiert bereits."
+  },
+  "CompleteSetupForm": {
+    "title": "Ein letzter Schritt",
+    "description": "Bitte geben Sie Ihren Namen ein, um Ihr Konto einzurichten.",
+    "firstNameLabel": "Vorname",
+    "firstNamePlaceholder": "Max",
+    "firstNameValidation": "Vorname ist erforderlich.",
+    "lastNameLabel": "Nachname",
+    "lastNamePlaceholder": "Mustermann",
+    "lastNameValidation": "Nachname ist erforderlich.",
+    "submit": "Speichern und weiter",
+    "successTitle": "Einrichtung abgeschlossen",
+    "errorTitle": "Fehler",
+    "notLoggedInError": "Sie müssen hierfür angemeldet sein.",
+    "genericError": "Ein unerwarteter Fehler ist aufgetreten."
+  },
+  "ProfilePage": {
+    "title": "Profileinstellungen",
+    "description": "Verwalten Sie Ihre Kontoeinstellungen und persönlichen Informationen."
+  },
+  "ProfileForm": {
+    "title": "Ihre Informationen",
+    "firstNameLabel": "Vorname",
+    "firstNamePlaceholder": "Max",
+    "firstNameValidation": "Vorname ist erforderlich.",
+    "lastNameLabel": "Nachname",
+    "lastNamePlaceholder": "Mustermann",
+    "lastNameValidation": "Nachname ist erforderlich.",
+    "emailLabel": "E-Mail-Adresse",
+    "emailValidation": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "submit": "Änderungen speichern",
+    "successTitle": "Profil aktualisiert",
+    "successDescription": "Ihre Informationen wurden erfolgreich aktualisiert.",
+    "errorTitle": "Aktualisierung fehlgeschlagen",
+    "notLoggedInError": "Sie müssen hierfür angemeldet sein.",
+    "emailInUseError": "Diese E-Mail wird bereits von einem anderen Konto verwendet.",
+    "genericError": "Ein unerwarteter Fehler ist aufgetreten."
   }
 }

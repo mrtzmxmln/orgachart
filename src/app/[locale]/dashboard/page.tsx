@@ -20,10 +20,12 @@ export default function DashboardPage() {
   useEffect(() => {
     if (user === null) {
       router.push('/login');
+    } else if (user && !user.hasCompletedSetup) {
+      router.push('/complete-setup');
     }
   }, [user, router]);
 
-  if (!user) {
+  if (!user || !user.hasCompletedSetup) {
     return (
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         <div className="space-y-4 mb-8">
@@ -40,7 +42,7 @@ export default function DashboardPage() {
       <div className="space-y-4 mb-8">
         <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
         <p className="text-muted-foreground">
-          {t('welcome', {email: user.email})}
+          {t('welcome', {name: user.firstName})}
         </p>
       </div>
 

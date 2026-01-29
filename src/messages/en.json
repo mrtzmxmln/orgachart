@@ -5,7 +5,8 @@
     "admin": "Admin",
     "logout": "Logout",
     "login": "Login",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "profile": "Profile"
   },
   "LanguageSwitcher": {
     "placeholder": "Language",
@@ -26,7 +27,7 @@
   },
   "Dashboard": {
     "title": "Dashboard",
-    "welcome": "Welcome, {email}. Here is your assigned content.",
+    "welcome": "Welcome, {name}. Here is your assigned content.",
     "chartTitle": "User Specific Chart",
     "noChartTitle": "No Chart Assigned",
     "noChartDescription": "There is currently no chart assigned to your account. Please contact an administrator."
@@ -34,14 +35,15 @@
   "AssignIframeDialog": {
     "edit": "Edit",
     "title": "Assign Chart",
-    "description": "Set or update the Chart URL for {email}. Leave empty to remove.",
+    "description": "Set or update the Chart URL for {name}. Leave empty to remove.",
     "formLabel": "Chart URL",
     "formValidation": "Please enter a valid URL.",
     "save": "Save Changes",
     "successTitle": "Success",
-    "successDescription": "Chart URL for {email} has been updated."
+    "successDescription": "Chart URL for {name} has been updated."
   },
   "UserTable": {
+    "user": "User",
     "email": "Email",
     "role": "Role",
     "chartUrl": "Chart URL",
@@ -77,5 +79,42 @@
     "successDescription": "Your account has been created.",
     "errorTitle": "Registration Failed",
     "errorDescription": "An account with this email already exists."
+  },
+  "CompleteSetupForm": {
+    "title": "One Last Step",
+    "description": "Please tell us your name to complete your account setup.",
+    "firstNameLabel": "First Name",
+    "firstNamePlaceholder": "John",
+    "firstNameValidation": "First name is required.",
+    "lastNameLabel": "Last Name",
+    "lastNamePlaceholder": "Doe",
+    "lastNameValidation": "Last name is required.",
+    "submit": "Save and Continue",
+    "successTitle": "Setup Complete",
+    "errorTitle": "Error",
+    "notLoggedInError": "You must be logged in to do this.",
+    "genericError": "An unexpected error occurred."
+  },
+  "ProfilePage": {
+    "title": "Profile Settings",
+    "description": "Manage your account settings and personal information."
+  },
+  "ProfileForm": {
+    "title": "Your Information",
+    "firstNameLabel": "First Name",
+    "firstNamePlaceholder": "John",
+    "firstNameValidation": "First name is required.",
+    "lastNameLabel": "Last Name",
+    "lastNamePlaceholder": "Doe",
+    "lastNameValidation": "Last name is required.",
+    "emailLabel": "Email Address",
+    "emailValidation": "Please enter a valid email address.",
+    "submit": "Save Changes",
+    "successTitle": "Profile Updated",
+    "successDescription": "Your information has been successfully updated.",
+    "errorTitle": "Update Failed",
+    "notLoggedInError": "You must be logged in to do this.",
+    "emailInUseError": "This email is already in use by another account.",
+    "genericError": "An unexpected error occurred."
   }
 }

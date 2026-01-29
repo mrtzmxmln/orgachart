@@ -49,14 +49,14 @@ export default function SignupForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    const success = await register(values.email, values.password);
+    const newUser = await register(values.email, values.password);
     setIsLoading(false);
-    if (success) {
+    if (newUser) {
       toast({
         title: t('successTitle'),
         description: t('successDescription'),
       });
-      router.push('/dashboard');
+      router.push('/complete-setup');
       router.refresh();
     } else {
       toast({

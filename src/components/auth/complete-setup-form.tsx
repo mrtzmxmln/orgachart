@@ -21,52 +21,51 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useAuth } from '@/hooks/use-auth';
-import { useRouter, Link } from '@/navigation';
+import { useRouter } from '@/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-export default function LoginForm() {
-  const t = useTranslations('LoginForm');
+export default function CompleteSetupForm() {
+  const t = useTranslations('CompleteSetupForm');
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const { user, completeInitialSetup } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
 
   const formSchema = z.object({
-    email: z.string().email({ message: t('emailValidation') }),
-    password: z.string().min(1, { message: t('passwordValidation') }),
+    firstName: z.string().min(1, { message: t('firstNameValidation') }),
+    lastName: z.string().min(1, { message: t('lastNameValidation') }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      firstName: '',
+      lastName: '',
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!user) {
+        toast({ variant: 'destructive', title: t('errorTitle'), description: t('notLoggedInError') });
+        return;
+    }
     setIsLoading(true);
-    const loggedInUser = await login(values.email, values.password);
+    const success = await completeInitialSetup(user.id, values);
     setIsLoading(false);
-    if (loggedInUser) {
+    if (success) {
       toast({
         title: t('successTitle'),
-        description: t('successDescription'),
       });
-      if (loggedInUser.hasCompletedSetup) {
-        router.push('/dashboard');
-      } else {
-        router.push('/complete-setup');
-      }
+      router.push('/dashboard');
       router.refresh();
     } else {
       toast({
         variant: 'destructive',
         title: t('errorTitle'),
-        description: t('errorDescription'),
+        description: t('genericError'),
       });
     }
   }
@@ -82,12 +81,12 @@ export default function LoginForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
-              name="email"
+              name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('emailLabel')}</FormLabel>
+                  <FormLabel>{t('firstNameLabel')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
+                    <Input placeholder={t('firstNamePlaceholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -95,12 +94,12 @@ export default function LoginForm() {
             />
             <FormField
               control={form.control}
-              name="password"
+              name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('passwordLabel')}</FormLabel>
+                  <FormLabel>{t('lastNameLabel')}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="••••••••" {...field} />
+                    <Input placeholder={t('lastNamePlaceholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -112,12 +111,6 @@ export default function LoginForm() {
             </Button>
           </form>
         </Form>
-        <div className="mt-4 text-center text-sm">
-          {t('noAccount')}{' '}
-          <Link href="/signup" className="underline text-primary">
-            {t('signUpLink')}
-          </Link>
-        </div>
       </CardContent>
     </Card>
   );

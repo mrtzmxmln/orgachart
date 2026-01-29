@@ -24,7 +24,7 @@ export function UserTable() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t('email')}</TableHead>
+            <TableHead>{t('user')}</TableHead>
             <TableHead>{t('role')}</TableHead>
             <TableHead>{t('chartUrl')}</TableHead>
             <TableHead className="text-right">{t('actions')}</TableHead>
@@ -33,7 +33,10 @@ export function UserTable() {
         <TableBody>
           {allUsers.map((user: User) => (
             <TableRow key={user.id}>
-              <TableCell className="font-medium">{user.email}</TableCell>
+              <TableCell>
+                 <div className="font-medium">{user.firstName} {user.lastName}</div>
+                 <div className="text-sm text-muted-foreground">{user.email}</div>
+              </TableCell>
               <TableCell>
                 <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
                   {user.role}

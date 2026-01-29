@@ -7,6 +7,9 @@ export type User = {
   password?: string; // Should be hashed in a real app
   role: 'user' | 'admin';
   iframeUrl: string | null;
+  firstName: string;
+  lastName: string;
+  hasCompletedSetup: boolean;
 };
 
 export const users: User[] = [
@@ -17,6 +20,9 @@ export const users: User[] = [
     role: 'admin',
     iframeUrl:
       'https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752141381%2C0.004017949104309083%2C51.478569861898604&layer=mapnik',
+    firstName: 'Admin',
+    lastName: 'User',
+    hasCompletedSetup: true,
   },
   {
     id: '2',
@@ -24,6 +30,9 @@ export const users: User[] = [
     password: 'password',
     role: 'user',
     iframeUrl: 'https://example.com',
+    firstName: 'Normal',
+    lastName: 'User',
+    hasCompletedSetup: true,
   },
   {
     id: '3',
@@ -31,6 +40,9 @@ export const users: User[] = [
     password: 'password',
     role: 'user',
     iframeUrl: null,
+    firstName: 'No',
+    lastName: 'Iframe',
+    hasCompletedSetup: true,
   },
   {
     id: '4',
@@ -38,5 +50,8 @@ export const users: User[] = [
     password: 'password',
     role: 'admin',
     iframeUrl: null,
+    firstName: 'Moritz',
+    lastName: 'Bauer',
+    hasCompletedSetup: true,
   },
 ];

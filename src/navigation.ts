@@ -8,7 +8,9 @@ export const pathnames = {
   '/login': '/login',
   '/signup': '/signup',
   '/dashboard': '/dashboard',
-  '/admin': '/admin'
+  '/admin': '/admin',
+  '/profile': '/profile',
+  '/complete-setup': '/complete-setup',
 } satisfies Record<string, any>;
 
 export const {Link, redirect, usePathname, useRouter} =
