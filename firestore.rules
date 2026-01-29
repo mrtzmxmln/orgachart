@@ -1,0 +1,141 @@
+/**
+ * This ruleset enforces a strict user-ownership model for the iFrame Manager
+ * application. It ensures that users can only access and manage their own data,
+ * while providing read-only access to a global catalog of iFrames.
+ *
+ * Core Philosophy:
+ * The security model is built on path-based authorization. A user's unique
+ * ID (UID) from Firebase Authentication is used as the document key in the
+ * `/users` collection and as a parameter in the path for all their related
+ * subcollections. This creates a secure data silo for each user.
+ *
+ * Data Structure:
+ * - /users/{userId}: Stores private user profile information.
+ * - /users/{userId}/userIFrameAssignments/{assignmentId}: Stores the specific
+ *   iFrames assigned to that user. Access is inherited from the parent user.
+ * - /iFrames/{iFrameId}: A global, read-only collection of available iFrame
+ *   configurations.
+ *
+ * Key Security Decisions:
+ * - User Isolation: A user can only ever read or write within their own
+ *   data tree (i.e., `/users/{their-own-userId}/...`).
+ * - No User Listing: To protect user privacy and prevent data scraping, it is
+ *   impossible to list all documents in the top-level `/users` collection.
+ * - Read-Only Global Data: The `/iFrames` collection is readable by any
+ *   authenticated user but cannot be modified. This provides a secure way to
+ *   distribute configuration data without exposing it to unauthorized writes.
+ *   Administration of this collection should be handled via a trusted server
+ *   environment (e.g., Cloud Functions) using Admin SDKs.
+ * - Relational Integrity: On creation, rules validate that the `userId` field
+ *   inside a document matches the `{userId}` in the path, ensuring data
+ *   consistency. This field is then enforced as immutable on updates.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions to improve readability and reuse of logic.
+
+    /**
+     * Checks if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Checks if the currently authenticated user's UID matches the provided userId.
+     * This is the core of the ownership-based security model.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    /**
+     * Ensures an update or delete operation targets an existing document and
+     * is performed by the document's owner. This prevents modifying documents
+     * that do not exist.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+    
+    /**
+     * Validates that a new User document contains an `id` field that
+     * matches the user's auth UID, enforcing relational consistency.
+     */
+    function hasValidUserDataOnCreate(userId) {
+      return request.resource.data.id == userId;
+    }
+    
+    /**
+     * Enforces immutability of the core `id` field in a User document
+     * during an update operation, preventing ownership transfer.
+     */
+    function isUserDataImmutable() {
+      return request.resource.data.id == resource.data.id;
+    }
+
+    /**
+     * Validates that a new UserIFrameAssignment document contains a `userId` field that
+     * matches the parent user's auth UID, enforcing relational consistency.
+     */
+    function hasValidAssignmentDataOnCreate(userId) {
+      return request.resource.data.userId == userId;
+    }
+
+    /**
+     * Enforces immutability of the `userId` field in an assignment document
+     * during an update, preventing the assignment from being moved to another user.
+     */
+    function isAssignmentDataImmutable() {
+      return request.resource.data.userId == resource.data.userId;
+    }
+
+    /**
+     * @description Manages user profile documents. Only the owner can access or modify their own document.
+     * @path /users/{userId}
+     * @allow (get) An authenticated user reads their own profile: `get /users/user_abc` by `user_abc`.
+     * @deny (list) An authenticated user attempts to list all users in the system.
+     * @deny (create) An authenticated user tries to create a profile for another user: `create /users/user_xyz` by `user_abc`.
+     * @principle Restricts access to a user's own data tree and prevents user enumeration.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) && hasValidUserDataOnCreate(userId);
+      allow update: if isExistingOwner(userId) && isUserDataImmutable();
+      allow delete: if isExistingOwner(userId);
+
+      /**
+       * @description Manages a user's iFrame assignments. Inherits ownership from the parent user document.
+       * @path /users/{userId}/userIFrameAssignments/{userIFrameAssignmentId}
+       * @allow (list) An authenticated user lists their own iFrame assignments: `list /users/user_abc/userIFrameAssignments` by `user_abc`.
+       * @deny (get) An authenticated user tries to read an assignment belonging to another user: `get /users/user_xyz/userIFrameAssignments/asgn_123` by `user_abc`.
+       * @principle Enforces document ownership for all operations within a user's private subcollection.
+       */
+      match /userIFrameAssignments/{userIFrameAssignmentId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId) && hasValidAssignmentDataOnCreate(userId);
+        allow update: if isExistingOwner(userId) && isAssignmentDataImmutable();
+        allow delete: if isExistingOwner(userId);
+      }
+    }
+
+    /**
+     * @description Stores global iFrame configurations. This data is public to all authenticated users but cannot be modified by them.
+     * @path /iFrames/{iFrameId}
+     * @allow (get, list) Any authenticated user can read the list of available iFrames.
+     * @deny (create, update, delete) No client is allowed to write to this collection. Modifications must be done via a trusted admin environment.
+     * @principle Provides public read access for configuration data while preventing all client-side writes.
+     */
+    match /iFrames/{iFrameId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}
