@@ -20,8 +20,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from 'firebase/auth';
-import { doc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -62,6 +64,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       case 'auth/user-not-found':
       case 'auth/wrong-password':
         return 'Invalid email or password.';
+      case 'auth/account-exists-with-different-credential':
+        return 'An account already exists with the same email address but different sign-in credentials.';
       default:
         return 'An unexpected error occurred. Please try again.';
     }
@@ -81,6 +85,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     },
     [auth, firestore]
   );
+  
+  const loginWithGoogle: AuthContextType['loginWithGoogle'] = useCallback(async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const gUser = result.user;
+      const userDocRef = doc(firestore, 'users', gUser.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      let appUser: User;
+
+      if (userDocSnap.exists()) {
+        appUser = { id: gUser.uid, ...userDocSnap.data() } as User;
+      } else {
+        const displayName = gUser.displayName || '';
+        const nameParts = displayName.split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+        
+        const newUser: Omit<User, 'id'> = {
+          email: gUser.email!,
+          role: 'user',
+          iframeUrl: null,
+          firstName,
+          lastName,
+          hasCompletedSetup: !!(firstName && lastName),
+        };
+
+        setDocumentNonBlocking(userDocRef, newUser, { merge: false });
+        appUser = { id: gUser.uid, ...newUser };
+      }
+
+      return { success: true, message: 'Login successful', user: appUser };
+    } catch (error: any) {
+      return { success: false, message: getErrorMessage(error.code), user: null };
+    }
+  }, [auth, firestore]);
 
   const logout: AuthContextType['logout'] = useCallback(async () => {
     await signOut(auth);
@@ -155,6 +196,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       user,
       isAuthLoading: isAuthLoading || isProfileLoading,
       login,
+      loginWithGoogle,
       logout,
       register,
       updateUserIframe,
@@ -167,6 +209,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isAuthLoading,
       isProfileLoading,
       login,
+      loginWithGoogle,
       logout,
       register,
       updateUserIframe,

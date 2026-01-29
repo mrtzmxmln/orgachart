@@ -27,10 +27,16 @@ import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512" {...props}>
+        <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 126 23.4 172.9 61.9l-76.2 76.2C307.4 102.4 279.8 88 248 88c-86.5 0-157.3 70.8-157.3 157.3S161.5 424 248 424c48.4 0 88.3-20.4 114.7-44.9l76.2 76.2C399.1 487.6 329.8 512 248 512z" />
+    </svg>
+)
+
 export default function LoginForm() {
   const t = useTranslations('LoginForm');
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -50,6 +56,29 @@ export default function LoginForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     const result = await login(values.email, values.password);
+    setIsLoading(false);
+    if (result.success && result.user) {
+      toast({
+        title: t('successTitle'),
+        description: t('successDescription'),
+      });
+      if (result.user.hasCompletedSetup) {
+        router.push('/dashboard');
+      } else {
+        router.push('/complete-setup');
+      }
+    } else {
+      toast({
+        variant: 'destructive',
+        title: t('errorTitle'),
+        description: result.message,
+      });
+    }
+  }
+
+  async function handleGoogleLogin() {
+    setIsLoading(true);
+    const result = await loginWithGoogle();
     setIsLoading(false);
     if (result.success && result.user) {
       toast({
@@ -111,6 +140,23 @@ export default function LoginForm() {
             </Button>
           </form>
         </Form>
+
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">
+              {t('orContinueWith')}
+            </span>
+          </div>
+        </div>
+
+        <Button variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={isLoading}>
+           <GoogleIcon className="mr-2 h-4 w-4" />
+          {t('googleSignIn')}
+        </Button>
+
         <div className="mt-4 text-center text-sm">
           {t('noAccount')}{' '}
           <Link href="/signup" className="underline text-primary">

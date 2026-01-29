@@ -21,9 +21,7 @@
   },
   "Admin": {
     "title": "Admin-Bereich",
-    "description": "Verwalten Sie Benutzer und deren Diagrammzuweisungen.",
-    "noteTitle": "Admin-Hinweis",
-    "noteDescription": "Für diese Demonstration werden die Benutzerdaten im Speicher gehalten und zurückgesetzt, wenn der Auth-Provider neu initialisiert wird. Änderungen werden nicht auf dem Server gespeichert."
+    "description": "Verwalten Sie Benutzer und deren Diagrammzuweisungen."
   },
   "Dashboard": {
     "title": "Dashboard",
@@ -40,7 +38,8 @@
     "formValidation": "Bitte geben Sie eine gültige URL ein.",
     "save": "Änderungen speichern",
     "successTitle": "Erfolg",
-    "successDescription": "Diagramm-URL für {name} wurde aktualisiert."
+    "successDescription": "Diagramm-URL für {name} wurde aktualisiert.",
+    "errorTitle": "Fehler"
   },
   "UserTable": {
     "user": "Benutzer",
@@ -63,7 +62,8 @@
     "successTitle": "Anmeldung erfolgreich",
     "successDescription": "Willkommen zurück!",
     "errorTitle": "Anmeldung fehlgeschlagen",
-    "errorDescription": "Ungültige E-Mail oder ungültiges Passwort. Bitte versuchen Sie es erneut."
+    "googleSignIn": "Mit Google anmelden",
+    "orContinueWith": "Oder fahre fort mit"
   },
   "SignupForm": {
     "title": "Konto erstellen",
@@ -77,8 +77,7 @@
     "signInLink": "Anmelden",
     "successTitle": "Registrierung erfolgreich",
     "successDescription": "Ihr Konto wurde erstellt.",
-    "errorTitle": "Registrierung fehlgeschlagen",
-    "errorDescription": "Ein Konto mit dieser E-Mail existiert bereits."
+    "errorTitle": "Registrierung fehlgeschlagen"
   },
   "CompleteSetupForm": {
     "title": "Ein letzter Schritt",
@@ -113,9 +112,7 @@
     "successTitle": "Profil aktualisiert",
     "successDescription": "Ihre Informationen wurden erfolgreich aktualisiert.",
     "errorTitle": "Aktualisierung fehlgeschlagen",
-    "notLoggedInError": "Sie müssen hierfür angemeldet sein.",
-    "emailInUseError": "Diese E-Mail wird bereits von einem anderen Konto verwendet.",
-    "genericError": "Ein unerwarteter Fehler ist aufgetreten."
+    "notLoggedInError": "Sie müssen hierfür angemeldet sein."
   },
   "EditUserDialog": {
     "editUser": "Benutzer bearbeiten",
@@ -131,8 +128,6 @@
     "successTitle": "Benutzer aktualisiert",
     "successDescription": "Die Informationen für {name} wurden erfolgreich aktualisiert.",
     "errorTitle": "Aktualisierung fehlgeschlagen",
-    "emailInUseError": "Diese E-Mail wird bereits von einem anderen Konto verwendet.",
-    "genericError": "Ein unerwarteter Fehler ist aufgetreten.",
     "firstNameValidation": "Vorname ist erforderlich.",
     "lastNameValidation": "Nachname ist erforderlich.",
     "emailValidation": "Bitte geben Sie eine gültige E-Mail-Adresse ein."

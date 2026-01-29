@@ -21,9 +21,7 @@
   },
   "Admin": {
     "title": "Admin Panel",
-    "description": "Manage users and their chart assignments.",
-    "noteTitle": "Admin Note",
-    "noteDescription": "For this demonstration, user data is stored in memory and will reset when the auth provider re-initializes. Changes are not persisted on the server."
+    "description": "Manage users and their chart assignments."
   },
   "Dashboard": {
     "title": "Dashboard",
@@ -40,7 +38,8 @@
     "formValidation": "Please enter a valid URL.",
     "save": "Save Changes",
     "successTitle": "Success",
-    "successDescription": "Chart URL for {name} has been updated."
+    "successDescription": "Chart URL for {name} has been updated.",
+    "errorTitle": "Error"
   },
   "UserTable": {
     "user": "User",
@@ -63,7 +62,8 @@
     "successTitle": "Login Successful",
     "successDescription": "Welcome back!",
     "errorTitle": "Login Failed",
-    "errorDescription": "Invalid email or password. Please try again."
+    "googleSignIn": "Sign in with Google",
+    "orContinueWith": "Or continue with"
   },
   "SignupForm": {
     "title": "Create an Account",
@@ -77,8 +77,7 @@
     "signInLink": "Sign In",
     "successTitle": "Registration Successful",
     "successDescription": "Your account has been created.",
-    "errorTitle": "Registration Failed",
-    "errorDescription": "An account with this email already exists."
+    "errorTitle": "Registration Failed"
   },
   "CompleteSetupForm": {
     "title": "One Last Step",
@@ -113,9 +112,7 @@
     "successTitle": "Profile Updated",
     "successDescription": "Your information has been successfully updated.",
     "errorTitle": "Update Failed",
-    "notLoggedInError": "You must be logged in to do this.",
-    "emailInUseError": "This email is already in use by another account.",
-    "genericError": "An unexpected error occurred."
+    "notLoggedInError": "You must be logged in to do this."
   },
   "EditUserDialog": {
     "editUser": "Edit User",
@@ -131,8 +128,6 @@
     "successTitle": "User Updated",
     "successDescription": "The information for {name} has been successfully updated.",
     "errorTitle": "Update Failed",
-    "emailInUseError": "This email is already in use by another account.",
-    "genericError": "An unexpected error occurred.",
     "firstNameValidation": "First name is required.",
     "lastNameValidation": "Last name is required.",
     "emailValidation": "Please enter a valid email address."
