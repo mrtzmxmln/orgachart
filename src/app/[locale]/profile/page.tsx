@@ -8,16 +8,16 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ProfilePage() {
   const t = useTranslations('ProfilePage');
-  const { user } = useAuth();
+  const { user, isAuthLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (user === null) {
+    if (!isAuthLoading && user === null) {
       router.replace('/login');
     }
-  }, [user, router]);
+  }, [user, isAuthLoading, router]);
 
-  if (!user) {
+  if (isAuthLoading || !user) {
     return (
       <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-3xl">
         <div className="space-y-4 mb-8">

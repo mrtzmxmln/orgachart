@@ -14,18 +14,20 @@ import { useTranslations } from 'next-intl';
 
 export default function DashboardPage() {
   const t = useTranslations('Dashboard');
-  const { user } = useAuth();
+  const { user, isAuthLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (user === null) {
-      router.push('/login');
-    } else if (user && !user.hasCompletedSetup) {
-      router.push('/complete-setup');
+    if (!isAuthLoading) {
+      if (user === null) {
+        router.push('/login');
+      } else if (user && !user.hasCompletedSetup) {
+        router.push('/complete-setup');
+      }
     }
-  }, [user, router]);
+  }, [user, isAuthLoading, router]);
 
-  if (!user || !user.hasCompletedSetup) {
+  if (isAuthLoading || !user || !user.hasCompletedSetup) {
     return (
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         <div className="space-y-4 mb-8">

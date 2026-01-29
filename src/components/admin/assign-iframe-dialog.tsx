@@ -64,16 +64,22 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    // In a real app, this would be an API call
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    updateUserIframe(user.id, values.iframeUrl || null);
+    const result = await updateUserIframe(user.id, values.iframeUrl || null);
     setIsLoading(false);
-    setOpen(false);
 
-    toast({
-      title: t('successTitle'),
-      description: t('successDescription', { name: `${user.firstName} ${user.lastName}` }),
-    });
+    if (result.success) {
+      setOpen(false);
+      toast({
+        title: t('successTitle'),
+        description: t('successDescription', { name: `${user.firstName} ${user.lastName}` }),
+      });
+    } else {
+      toast({
+        variant: 'destructive',
+        title: t('errorTitle'),
+        description: result.message,
+      });
+    }
   }
 
   return (

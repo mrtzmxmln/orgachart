@@ -76,7 +76,7 @@ export default function ProfileForm() {
       toast({
         variant: 'destructive',
         title: t('errorTitle'),
-        description: t(result.message as 'emailInUseError' | 'genericError'),
+        description: result.message,
       });
     }
   }
@@ -124,7 +124,7 @@ export default function ProfileForm() {
                         <FormItem>
                         <FormLabel>{t('emailLabel')}</FormLabel>
                         <FormControl>
-                            <Input placeholder="name@example.com" {...field} />
+                            <Input placeholder="name@example.com" {...field} disabled />
                         </FormControl>
                         <FormMessage />
                         </FormItem>

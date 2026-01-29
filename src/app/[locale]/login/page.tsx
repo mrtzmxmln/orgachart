@@ -7,16 +7,16 @@ import LoginForm from '@/components/auth/login-form';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function LoginPage() {
-  const { user } = useAuth();
+  const { user, isAuthLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (user) {
+    if (!isAuthLoading && user) {
       router.replace('/dashboard');
     }
-  }, [user, router]);
+  }, [user, isAuthLoading, router]);
 
-  if (user) {
+  if (isAuthLoading || user) {
     return (
         <div className="flex items-center justify-center min-h-full py-12 px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-md space-y-8">

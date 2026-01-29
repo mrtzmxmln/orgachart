@@ -53,9 +53,9 @@ export default function CompleteSetupForm() {
         return;
     }
     setIsLoading(true);
-    const success = await completeInitialSetup(user.id, values);
+    const result = await completeInitialSetup(user.id, values);
     setIsLoading(false);
-    if (success) {
+    if (result.success) {
       toast({
         title: t('successTitle'),
       });
@@ -64,7 +64,7 @@ export default function CompleteSetupForm() {
       toast({
         variant: 'destructive',
         title: t('errorTitle'),
-        description: t('genericError'),
+        description: result.message,
       });
     }
   }

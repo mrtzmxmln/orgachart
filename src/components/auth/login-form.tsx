@@ -49,14 +49,14 @@ export default function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    const loggedInUser = await login(values.email, values.password);
+    const result = await login(values.email, values.password);
     setIsLoading(false);
-    if (loggedInUser) {
+    if (result.success && result.user) {
       toast({
         title: t('successTitle'),
         description: t('successDescription'),
       });
-      if (loggedInUser.hasCompletedSetup) {
+      if (result.user.hasCompletedSetup) {
         router.push('/dashboard');
       } else {
         router.push('/complete-setup');
@@ -65,7 +65,7 @@ export default function LoginForm() {
       toast({
         variant: 'destructive',
         title: t('errorTitle'),
-        description: t('errorDescription'),
+        description: result.message,
       });
     }
   }

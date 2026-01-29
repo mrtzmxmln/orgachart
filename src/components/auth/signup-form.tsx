@@ -49,9 +49,9 @@ export default function SignupForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    const newUser = await register(values.email, values.password);
+    const result = await register(values.email, values.password);
     setIsLoading(false);
-    if (newUser) {
+    if (result.success) {
       toast({
         title: t('successTitle'),
         description: t('successDescription'),
@@ -61,7 +61,7 @@ export default function SignupForm() {
       toast({
         variant: 'destructive',
         title: t('errorTitle'),
-        description: t('errorDescription'),
+        description: result.message,
       });
     }
   }

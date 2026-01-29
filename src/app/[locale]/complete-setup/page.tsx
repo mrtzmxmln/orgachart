@@ -7,18 +7,20 @@ import { useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function CompleteSetupPage() {
-  const { user } = useAuth();
+  const { user, isAuthLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (user === null) {
-      router.replace('/login');
-    } else if (user && user.hasCompletedSetup) {
-      router.replace('/dashboard');
+    if (!isAuthLoading) {
+      if (user === null) {
+        router.replace('/login');
+      } else if (user && user.hasCompletedSetup) {
+        router.replace('/dashboard');
+      }
     }
-  }, [user, router]);
+  }, [user, isAuthLoading, router]);
 
-  if (!user || user.hasCompletedSetup) {
+  if (isAuthLoading || !user || user.hasCompletedSetup) {
     return (
         <div className="flex items-center justify-center min-h-full py-12 px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-md space-y-8">

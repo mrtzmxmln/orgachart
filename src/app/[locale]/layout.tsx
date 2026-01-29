@@ -6,6 +6,7 @@ import Footer from '@/components/footer';
 import { Toaster } from '@/components/ui/toaster';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
+import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
   title: 'OrgaChart',
@@ -33,14 +34,16 @@ export default async function LocaleLayout({
       </head>
       <body className="font-body antialiased h-full bg-background">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <AuthProvider>
-            <div className="flex flex-col h-full">
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
-            <Toaster />
-          </AuthProvider>
+          <FirebaseClientProvider>
+            <AuthProvider>
+              <div className="flex flex-col h-full">
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+              <Toaster />
+            </AuthProvider>
+          </FirebaseClientProvider>
         </NextIntlClientProvider>
       </body>
     </html>

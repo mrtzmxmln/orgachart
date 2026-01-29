@@ -1,236 +1,193 @@
 'use client';
 
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useRouter } from '@/navigation';
-import { users as mockUsers, type User } from '@/lib/data';
-
-type UpdateUserData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-};
-
-type UpdateUserByAdminData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: 'user' | 'admin';
-};
-
-interface AuthContextType {
-  user: User | null;
-  login: (email: string, password: string) => Promise<User | null>;
-  logout: () => void;
-  register: (email: string, password: string) => Promise<User | null>;
-  updateUserIframe: (userId: string, iframeUrl: string | null) => void;
-  updateUserProfile: (
-    userId: string,
-    data: UpdateUserData
-  ) => Promise<{ success: boolean; message: string }>;
-  updateUserByAdmin: (
-    userId: string,
-    data: UpdateUserByAdminData
-  ) => Promise<{ success: boolean; message: string }>;
-  completeInitialSetup: (
-    userId: string,
-    data: { firstName: string; lastName: string }
-  ) => Promise<boolean>;
-  allUsers: User[];
-}
-
-export const AuthContext = createContext<AuthContextType | null>(null);
-
-// NOTE: This is a mock auth provider. In a real app, you'd use a service like
-// Firebase Auth, NextAuth.js, or a custom backend. User data is not persisted
-// beyond the client-side session and will be lost on a hard refresh of the data source.
-let usersData = [...mockUsers];
+import type { User } from '@/lib/data';
+import {
+  AuthContext,
+  AuthContextType,
+} from '@/context/auth-context';
+import {
+  useUser,
+  useAuth as useFirebaseAuth,
+  useFirestore,
+  useDoc,
+  useCollection,
+  useMemoFirebase,
+  setDocumentNonBlocking,
+  updateDocumentNonBlocking,
+} from '@/firebase';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
+import { doc, collection } from 'firebase/firestore';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [users, setUsers] = useState<User[]>(usersData);
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const auth = useFirebaseAuth();
+  const firestore = useFirestore();
+  const {
+    user: authUser,
+    isUserLoading: isAuthLoading,
+    userError,
+  } = useUser();
 
-  useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        const parsedUser: User = JSON.parse(storedUser);
-        // re-validate user against our mock data
-        const validUser = usersData.find((u) => u.id === parsedUser.id);
-        if (validUser) {
-          setUser(validUser);
-        } else {
-          // User in local storage is not in our data source, log them out
-          localStorage.removeItem('user');
-        }
-      }
-    } catch (error) {
-      console.error('Failed to parse user from localStorage', error);
-      localStorage.removeItem('user');
+  const userDocRef = useMemoFirebase(() => {
+    if (!authUser) return null;
+    return doc(firestore, 'users', authUser.uid);
+  }, [firestore, authUser]);
+  const { data: userProfile, isLoading: isProfileLoading } = useDoc<User>(userDocRef);
+  
+  const usersColRef = useMemoFirebase(() => collection(firestore, 'users'), [firestore]);
+  const { data: allUsers, isLoading: isUsersLoading } = useCollection<User>(usersColRef);
+
+  const user = useMemo<User | null>(() => {
+    if (!authUser || !userProfile) return null;
+    return {
+      id: authUser.uid,
+      ...userProfile
+    };
+  }, [authUser, userProfile]);
+
+  const getErrorMessage = (errorCode: string): string => {
+    switch (errorCode) {
+      case 'auth/email-already-in-use':
+        return 'This email address is already in use.';
+      case 'auth/invalid-email':
+        return 'The email address is not valid.';
+      case 'auth/operation-not-allowed':
+        return 'Email/password accounts are not enabled.';
+      case 'auth/weak-password':
+        return 'The password is too weak.';
+      case 'auth/user-disabled':
+        return 'This user account has been disabled.';
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+        return 'Invalid email or password.';
+      default:
+        return 'An unexpected error occurred. Please try again.';
     }
-    setLoading(false);
-  }, []);
+  };
 
-  const login = useCallback(
-    async (email: string, password: string): Promise<User | null> => {
-      const foundUser = usersData.find(
-        (u) => u.email === email && u.password === password
-      );
-      if (foundUser) {
-        const { password: _, ...userToStore } = foundUser;
-        setUser(userToStore);
-        localStorage.setItem('user', JSON.stringify(userToStore));
-        return userToStore;
+  const login: AuthContextType['login'] = useCallback(
+    async (email, password) => {
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const userDoc = doc(firestore, 'users', userCredential.user.uid);
+        // This is a bit of a hack, we should get the user doc after login
+        // but for now we optimistically assume the user exists
+        return { success: true, message: 'Login successful', user: {id: userCredential.user.uid, email } as User};
+      } catch (error: any) {
+        return { success: false, message: getErrorMessage(error.code), user: null };
       }
-      return null;
     },
-    []
+    [auth, firestore]
   );
 
-  const logout = useCallback(() => {
-    setUser(null);
-    localStorage.removeItem('user');
+  const logout: AuthContextType['logout'] = useCallback(async () => {
+    await signOut(auth);
     router.push('/login');
-  }, [router]);
+  }, [auth, router]);
 
-  const register = useCallback(
-    async (email: string, password: string): Promise<User | null> => {
-      if (usersData.some((u) => u.email === email)) {
-        return null; // User already exists
-      }
-      const newUser: User = {
-        id: String(Date.now()),
-        email,
-        password,
-        role: 'user',
-        iframeUrl: null,
-        firstName: '',
-        lastName: '',
-        hasCompletedSetup: false,
-      };
-      
-      usersData.push(newUser);
-      setUsers(usersData);
-      
-      const { password: _, ...userToStore } = newUser;
-      setUser(userToStore);
-      localStorage.setItem('user', JSON.stringify(userToStore));
-      return userToStore;
-    },
-    []
-  );
-
-  const updateUserIframe = useCallback(
-    (userId: string, iframeUrl: string | null) => {
-      usersData = usersData.map((u) =>
-        u.id === userId ? { ...u, iframeUrl } : u
-      );
-      setUsers(usersData);
-
-      if (user && user.id === userId) {
-        const updatedCurrentUser = { ...user, iframeUrl };
-        setUser(updatedCurrentUser);
-        localStorage.setItem('user', JSON.stringify(updatedCurrentUser));
+  const register: AuthContextType['register'] = useCallback(
+    async (email, password) => {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const newUser: Omit<User, 'id'> = {
+            email,
+            role: 'user',
+            iframeUrl: null,
+            firstName: '',
+            lastName: '',
+            hasCompletedSetup: false,
+        };
+        const userDocRef = doc(firestore, 'users', userCredential.user.uid);
+        setDocumentNonBlocking(userDocRef, newUser, { merge: false });
+        return { success: true, message: 'Registration successful', user: {id: userCredential.user.uid, ...newUser }};
+      } catch (error: any) {
+        return { success: false, message: getErrorMessage(error.code), user: null };
       }
     },
-    [user]
+    [auth, firestore]
   );
   
-  const updateUserProfile = useCallback(
-    async (
-      userId: string,
-      data: UpdateUserData
-    ): Promise<{ success: boolean; message: string }> => {
-      // Check for email uniqueness if it has changed
-      if (usersData.some((u) => u.email === data.email && u.id !== userId)) {
-        return { success: false, message: 'emailInUseError' };
+  const updateUserIframe: AuthContextType['updateUserIframe'] = useCallback(async (userId, iframeUrl) => {
+      try {
+        const userDocRef = doc(firestore, 'users', userId);
+        updateDocumentNonBlocking(userDocRef, { iframeUrl });
+        return { success: true, message: 'Iframe URL updated.' };
+      } catch (error: any) {
+        return { success: false, message: 'Failed to update Iframe URL.' };
       }
+    }, [firestore]);
 
-      usersData = usersData.map((u) =>
-        u.id === userId ? { ...u, ...data } : u
-      );
-      setUsers(usersData);
-
-      if (user && user.id === userId) {
-        const updatedCurrentUser = { ...user, ...data };
-        setUser(updatedCurrentUser);
-        localStorage.setItem('user', JSON.stringify(updatedCurrentUser));
+  const updateUserProfile: AuthContextType['updateUserProfile'] = useCallback(async (userId, data) => {
+      try {
+        const userDocRef = doc(firestore, 'users', userId);
+        updateDocumentNonBlocking(userDocRef, data);
+        return { success: true, message: 'Profile updated.' };
+      } catch (error: any) {
+        return { success: false, message: 'Failed to update profile.' };
       }
-      return { success: true, message: 'success' };
-    },
-    [user]
+    }, [firestore]);
+    
+  const updateUserByAdmin: AuthContextType['updateUserByAdmin'] = useCallback(async (userId, data) => {
+      try {
+        const userDocRef = doc(firestore, 'users', userId);
+        updateDocumentNonBlocking(userDocRef, data);
+        return { success: true, message: 'User updated.' };
+      } catch (error: any) {
+        return { success: false, message: 'Failed to update user.' };
+      }
+    }, [firestore]);
+    
+  const completeInitialSetup: AuthContextType['completeInitialSetup'] = useCallback(async (userId, data) => {
+      try {
+        const userDocRef = doc(firestore, 'users', userId);
+        updateDocumentNonBlocking(userDocRef, { ...data, hasCompletedSetup: true });
+        return { success: true, message: 'Setup complete.' };
+      } catch (error: any) {
+        return { success: false, message: 'Failed to complete setup.' };
+      }
+    }, [firestore]);
+
+
+  const value = useMemo(
+    () => ({
+      user,
+      isAuthLoading: isAuthLoading || isProfileLoading,
+      login,
+      logout,
+      register,
+      allUsers: allUsers || [],
+      isUsersLoading,
+      updateUserIframe,
+      updateUserProfile,
+      updateUserByAdmin,
+      completeInitialSetup,
+    }),
+    [
+      user,
+      isAuthLoading,
+      isProfileLoading,
+      login,
+      logout,
+      register,
+      allUsers,
+      isUsersLoading,
+      updateUserIframe,
+      updateUserProfile,
+      updateUserByAdmin,
+      completeInitialSetup,
+    ]
   );
 
-  const updateUserByAdmin = useCallback(
-    async (
-      userId: string,
-      data: UpdateUserByAdminData
-    ): Promise<{ success: boolean; message: string }> => {
-      // Check for email uniqueness if it has changed
-      if (usersData.some((u) => u.email === data.email && u.id !== userId)) {
-        return { success: false, message: 'emailInUseError' };
-      }
-
-      usersData = usersData.map((u) =>
-        u.id === userId ? { ...u, ...data } : u
-      );
-      setUsers([...usersData]);
-
-      if (user && user.id === userId) {
-        const updatedCurrentUser = { ...user, ...data };
-        setUser(updatedCurrentUser);
-        localStorage.setItem('user', JSON.stringify(updatedCurrentUser));
-      }
-      return { success: true, message: 'success' };
-    },
-    [user]
-  );
-  
-  const completeInitialSetup = useCallback(
-    async (
-      userId: string,
-      data: { firstName: string; lastName: string }
-    ): Promise<boolean> => {
-      usersData = usersData.map((u) =>
-        u.id === userId ? { ...u, ...data, hasCompletedSetup: true } : u
-      );
-      setUsers(usersData);
-
-      if (user && user.id === userId) {
-        const updatedCurrentUser = { ...user, ...data, hasCompletedSetup: true };
-        setUser(updatedCurrentUser);
-        localStorage.setItem('user', JSON.stringify(updatedCurrentUser));
-      }
-      return true;
-    },
-    [user]
-  );
-
-  if (loading) {
-    return null; // or a loading spinner
+  if (userError) {
+    // Handle auth error, maybe show a global error message
+    console.error("Authentication Error:", userError);
   }
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        logout,
-        register,
-        allUsers: users,
-        updateUserIframe,
-        updateUserProfile,
-        updateUserByAdmin,
-        completeInitialSetup,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

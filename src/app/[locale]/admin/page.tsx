@@ -11,18 +11,20 @@ import { useTranslations } from 'next-intl';
 
 export default function AdminPage() {
   const t = useTranslations('Admin');
-  const { user } = useAuth();
+  const { user, isAuthLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (user === null) {
-      router.push('/login');
-    } else if (user.role !== 'admin') {
-      router.push('/dashboard');
+    if (!isAuthLoading) {
+      if (user === null) {
+        router.push('/login');
+      } else if (user.role !== 'admin') {
+        router.push('/dashboard');
+      }
     }
-  }, [user, router]);
+  }, [user, isAuthLoading, router]);
 
-  if (!user || user.role !== 'admin') {
+  if (isAuthLoading || !user || user.role !== 'admin') {
      return (
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         <div className="space-y-4 mb-8">
@@ -45,12 +47,6 @@ export default function AdminPage() {
       </div>
 
       <UserTable />
-
-      <Alert className="mt-8">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>{t('noteTitle')}</AlertTitle>
-        <AlertDescription>{t('noteDescription')}</AlertDescription>
-      </Alert>
     </div>
   );
 }

@@ -1,139 +1,62 @@
 {
   "entities": {
     "User": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "User",
       "type": "object",
       "description": "Represents a user of the iFrame Manager application.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the User entity."
-        },
         "email": {
           "type": "string",
           "description": "Email address of the user.",
           "format": "email"
-        }
-      },
-      "required": [
-        "id",
-        "email"
-      ]
-    },
-    "IFrame": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "IFrame",
-      "type": "object",
-      "description": "Represents an iFrame that can be assigned to users.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the IFrame entity."
         },
-        "url": {
+        "role": {
           "type": "string",
-          "description": "URL of the iFrame.",
+          "description": "The role of the user.",
+          "enum": [
+            "user",
+            "admin"
+          ]
+        },
+        "iframeUrl": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "URL of the iFrame assigned to the user.",
           "format": "uri"
         },
-        "description": {
+        "firstName": {
           "type": "string",
-          "description": "Description of the iFrame."
+          "description": "User's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "User's last name."
+        },
+        "hasCompletedSetup": {
+          "type": "boolean",
+          "description": "Flag indicating if the user has completed the initial setup."
         }
       },
       "required": [
-        "id",
-        "url",
-        "description"
-      ]
-    },
-    "UserIFrameAssignment": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "UserIFrameAssignment",
-      "type": "object",
-      "description": "Represents the assignment of an iFrame to a user.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the UserIFrameAssignment entity."
-        },
-        "userId": {
-          "type": "string",
-          "description": "Reference to User. (Relationship: User 1:N UserIFrameAssignment)"
-        },
-        "iFrameId": {
-          "type": "string",
-          "description": "Reference to IFrame. (Relationship: IFrame 1:N UserIFrameAssignment)"
-        }
-      },
-      "required": [
-        "id",
-        "userId",
-        "iFrameId"
+        "email",
+        "role",
+        "hasCompletedSetup"
       ]
     }
   },
   "auth": {
     "providers": [
-      "password",
-      "anonymous"
+      "password"
     ]
   },
   "firestore": {
-    "structure": [
-      {
-        "path": "/users/{userId}",
-        "definition": {
-          "entityName": "User",
-          "schema": {
-            "$ref": "#/backend/entities/User"
-          },
-          "description": "Stores user profiles. User ID is the Firebase Auth UID.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The Firebase Auth UID of the user."
-            }
-          ]
-        }
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
       },
-      {
-        "path": "/users/{userId}/userIFrameAssignments/{userIFrameAssignmentId}",
-        "definition": {
-          "entityName": "UserIFrameAssignment",
-          "schema": {
-            "$ref": "#/backend/entities/UserIFrameAssignment"
-          },
-          "description": "Stores assignments of iFrames to users. Authorization is path-based; only the user can manage their own assignments.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The Firebase Auth UID of the user."
-            },
-            {
-              "name": "userIFrameAssignmentId",
-              "description": "The unique ID of the user's iFrame assignment."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/iFrames/{iFrameId}",
-        "definition": {
-          "entityName": "IFrame",
-          "schema": {
-            "$ref": "#/backend/entities/IFrame"
-          },
-          "description": "Stores iFrame configurations. Accessible by admins to manage available iFrames.",
-          "params": [
-            {
-              "name": "iFrameId",
-              "description": "The unique ID of the iFrame."
-            }
-          ]
-        }
-      }
-    ],
-    "reasoning": "This Firestore data structure is designed to manage users, iFrames, and their assignments in the iFrame Manager application. It emphasizes authorization independence to ensure secure and scalable operations.  The design leverages path-based ownership for user data and denormalization for iFrame assignments to avoid complex security rules and enable efficient queries.\n\n*   **Users Collection:** Stores user profiles with basic information (id, email). This collection will be managed via firebase authentication.\n*   **UserIFrameAssignments Subcollection:**  Each user has a subcollection of iFrame assignments. This achieves Authorization Independence by implicitly associating the assignment with the user's ID via the path (`/users/{userId}/userIFrameAssignments/{assignmentId}`). This also allows for efficient queries for a user's assigned iFrames.\n\nThis structure supports the required QAPs by:\n\n*   **Secure List Operations:** The `/users/{userId}/userIFrameAssignments` path enables secure `list` operations. Rules can easily verify that the requesting user is the owner of the data (i.e., `request.auth.uid == userId`).\n*   **Authorization Independence:**  By nesting assignments under users, authorization depends solely on the user's `uid` and the path.  No `get()` calls are needed to verify ownership, which simplifies rules and ensures atomic operations."
+      "description": "Stores user profiles. User ID is the Firebase Auth UID."
+    }
   }
 }

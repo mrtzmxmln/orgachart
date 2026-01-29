@@ -90,7 +90,7 @@ export function EditUserDialog({ user }: EditUserDialogProps) {
        toast({
         variant: 'destructive',
         title: t('errorTitle'),
-        description: t(result.message as 'emailInUseError' | 'genericError'),
+        description: result.message
       });
     }
   }
@@ -149,7 +149,7 @@ export function EditUserDialog({ user }: EditUserDialogProps) {
                 <FormItem>
                   <FormLabel>{t('emailLabel')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
