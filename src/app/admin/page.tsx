@@ -40,7 +40,7 @@ export default function AdminPage() {
           Admin Panel
         </h1>
         <p className="text-muted-foreground">
-          Manage users and their iFrame assignments.
+          Manage users and their chart assignments.
         </p>
       </div>
 

@@ -24,7 +24,7 @@ export function UserTable() {
           <TableRow>
             <TableHead>Email</TableHead>
             <TableHead>Role</TableHead>
-            <TableHead>iFrame URL</TableHead>
+            <TableHead>Chart URL</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>

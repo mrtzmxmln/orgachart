@@ -5,8 +5,8 @@ import Header from '@/components/header';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'iFrame Manager',
-  description: 'Manage and display user-specific iframes.',
+  title: 'OrgaChart',
+  description: 'Create and manage organizational charts.',
 };
 
 export default function RootLayout({

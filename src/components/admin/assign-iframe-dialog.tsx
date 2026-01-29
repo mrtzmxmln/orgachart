@@ -70,7 +70,7 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
 
     toast({
       title: 'Success',
-      description: `iFrame URL for ${user.email} has been updated.`,
+      description: `Chart URL for ${user.email} has been updated.`,
     });
   }
 
@@ -84,9 +84,9 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Assign iFrame</DialogTitle>
+          <DialogTitle>Assign Chart</DialogTitle>
           <DialogDescription>
-            Set or update the iFrame URL for{' '}
+            Set or update the Chart URL for{' '}
             <span className="font-medium">{user.email}</span>. Leave empty to
             remove.
           </DialogDescription>
@@ -98,7 +98,7 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
               name="iframeUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>iFrame URL</FormLabel>
+                  <FormLabel>Chart URL</FormLabel>
                   <FormControl>
                     <Input placeholder="https://example.com" {...field} />
                   </FormControl>

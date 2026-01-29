@@ -12,12 +12,10 @@ export default function Home() {
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-headline font-bold tracking-tighter text-primary">
-            Manage Your Frames, Seamlessly
+            Visualize Your Organization
           </h1>
           <p className="text-lg text-muted-foreground">
-            iFrame Manager provides a simple and powerful solution to assign and
-            display personalized content to your users. Secure, scalable, and
-            easy to use.
+            OrgaChart provides a simple and powerful solution to create and manage organizational charts for your team. Secure, scalable, and easy to use.
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             <Button asChild size="lg">

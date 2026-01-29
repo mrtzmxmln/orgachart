@@ -47,7 +47,7 @@ export default function DashboardPage() {
           <CardContent className="p-0 aspect-video">
             <iframe
               src={user.iframeUrl}
-              title="User Specific Content"
+              title="User Specific Chart"
               className="w-full h-full border-0"
               allowFullScreen
             />
@@ -56,9 +56,9 @@ export default function DashboardPage() {
       ) : (
         <Alert>
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>No Content Assigned</AlertTitle>
+          <AlertTitle>No Chart Assigned</AlertTitle>
           <AlertDescription>
-            There is currently no iFrame content assigned to your account. Please
+            There is currently no chart assigned to your account. Please
             contact an administrator.
           </AlertDescription>
         </Alert>

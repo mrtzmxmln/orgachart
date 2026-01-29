@@ -26,7 +26,7 @@ export default function Header() {
             href="/"
             className="text-2xl font-bold text-primary"
           >
-            iFrame Manager
+            OrgaChart
           </Link>
           <nav className="flex items-center space-x-2 sm:space-x-4">
             {user ? (
