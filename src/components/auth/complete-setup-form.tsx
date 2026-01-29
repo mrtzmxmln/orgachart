@@ -60,7 +60,6 @@ export default function CompleteSetupForm() {
         title: t('successTitle'),
       });
       router.push('/dashboard');
-      router.refresh();
     } else {
       toast({
         variant: 'destructive',

@@ -61,7 +61,6 @@ export default function LoginForm() {
       } else {
         router.push('/complete-setup');
       }
-      router.refresh();
     } else {
       toast({
         variant: 'destructive',

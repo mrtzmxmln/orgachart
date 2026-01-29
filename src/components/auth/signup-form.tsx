@@ -57,7 +57,6 @@ export default function SignupForm() {
         description: t('successDescription'),
       });
       router.push('/complete-setup');
-      router.refresh();
     } else {
       toast({
         variant: 'destructive',
