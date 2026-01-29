@@ -1,0 +1,81 @@
+
+{
+  "Header": {
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "logout": "Logout",
+    "login": "Login",
+    "signUp": "Sign Up"
+  },
+  "LanguageSwitcher": {
+    "placeholder": "Language",
+    "en": "English",
+    "de": "Deutsch"
+  },
+  "Home": {
+    "title": "Visualize Your Organization",
+    "subtitle": "OrgaChart provides a simple and powerful solution to create and manage organizational charts for your team. Secure, scalable, and easy to use.",
+    "getStarted": "Get Started for Free",
+    "accessDashboard": "Access Your Dashboard"
+  },
+  "Admin": {
+    "title": "Admin Panel",
+    "description": "Manage users and their chart assignments.",
+    "noteTitle": "Admin Note",
+    "noteDescription": "For this demonstration, user data is stored in memory and will reset when the auth provider re-initializes. Changes are not persisted on the server."
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome, {email}. Here is your assigned content.",
+    "chartTitle": "User Specific Chart",
+    "noChartTitle": "No Chart Assigned",
+    "noChartDescription": "There is currently no chart assigned to your account. Please contact an administrator."
+  },
+  "AssignIframeDialog": {
+    "edit": "Edit",
+    "title": "Assign Chart",
+    "description": "Set or update the Chart URL for {email}. Leave empty to remove.",
+    "formLabel": "Chart URL",
+    "formValidation": "Please enter a valid URL.",
+    "save": "Save Changes",
+    "successTitle": "Success",
+    "successDescription": "Chart URL for {email} has been updated."
+  },
+  "UserTable": {
+    "email": "Email",
+    "role": "Role",
+    "chartUrl": "Chart URL",
+    "actions": "Actions",
+    "notSet": "Not set"
+  },
+  "LoginForm": {
+    "title": "Welcome Back",
+    "description": "Enter your credentials to access your account.",
+    "emailLabel": "Email",
+    "emailValidation": "Please enter a valid email address.",
+    "passwordLabel": "Password",
+    "passwordValidation": "Password is required.",
+    "submit": "Sign In",
+    "noAccount": "Don't have an account?",
+    "signUpLink": "Sign up",
+    "successTitle": "Login Successful",
+    "successDescription": "Welcome back!",
+    "errorTitle": "Login Failed",
+    "errorDescription": "Invalid email or password. Please try again."
+  },
+  "SignupForm": {
+    "title": "Create an Account",
+    "description": "Enter your details to get started.",
+    "emailLabel": "Email",
+    "emailValidation": "Please enter a valid email address.",
+    "passwordLabel": "Password",
+    "passwordValidation": "Password must be at least 8 characters.",
+    "submit": "Sign Up",
+    "hasAccount": "Already have an account?",
+    "signInLink": "Sign In",
+    "successTitle": "Registration Successful",
+    "successDescription": "Your account has been created.",
+    "errorTitle": "Registration Failed",
+    "errorDescription": "An account with this email already exists."
+  }
+}

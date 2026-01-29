@@ -21,24 +21,23 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useAuth } from '@/hooks/use-auth';
-import { useRouter } from 'next/navigation';
+import { useRouter, Link } from '@/navigation';
 import { useToast } from '@/hooks/use-toast';
-import Link from 'next/link';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
-
-const formSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address.' }),
-  password: z
-    .string()
-    .min(8, { message: 'Password must be at least 8 characters.' }),
-});
+import { useTranslations } from 'next-intl';
 
 export default function SignupForm() {
+  const t = useTranslations('SignupForm');
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+
+  const formSchema = z.object({
+    email: z.string().email({ message: t('emailValidation') }),
+    password: z.string().min(8, { message: t('passwordValidation') }),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,16 +53,16 @@ export default function SignupForm() {
     setIsLoading(false);
     if (success) {
       toast({
-        title: 'Registration Successful',
-        description: 'Your account has been created.',
+        title: t('successTitle'),
+        description: t('successDescription'),
       });
       router.push('/dashboard');
       router.refresh();
     } else {
       toast({
         variant: 'destructive',
-        title: 'Registration Failed',
-        description: 'An account with this email already exists.',
+        title: t('errorTitle'),
+        description: t('errorDescription'),
       });
     }
   }
@@ -71,8 +70,8 @@ export default function SignupForm() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Create an Account</CardTitle>
-        <CardDescription>Enter your details to get started.</CardDescription>
+        <CardTitle className="text-2xl">{t('title')}</CardTitle>
+        <CardDescription>{t('description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -82,7 +81,7 @@ export default function SignupForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('emailLabel')}</FormLabel>
                   <FormControl>
                     <Input placeholder="name@example.com" {...field} />
                   </FormControl>
@@ -95,7 +94,7 @@ export default function SignupForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('passwordLabel')}</FormLabel>
                   <FormControl>
                     <Input type="password" placeholder="••••••••" {...field} />
                   </FormControl>
@@ -105,14 +104,14 @@ export default function SignupForm() {
             />
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Sign Up
+              {t('submit')}
             </Button>
           </form>
         </Form>
         <div className="mt-4 text-center text-sm">
-          Already have an account?{' '}
+          {t('hasAccount')}{' '}
           <Link href="/login" className="underline text-primary">
-            Sign In
+            {t('signInLink')}
           </Link>
         </div>
       </CardContent>

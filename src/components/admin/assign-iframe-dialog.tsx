@@ -27,23 +27,21 @@ import { useAuth } from '@/hooks/use-auth';
 import type { User } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Pencil } from 'lucide-react';
-
-const formSchema = z.object({
-  iframeUrl: z
-    .string()
-    .url({ message: 'Please enter a valid URL.' })
-    .or(z.literal('')),
-});
-
-interface AssignIframeDialogProps {
-  user: User;
-}
+import { useTranslations } from 'next-intl';
 
 export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
+  const t = useTranslations('AssignIframeDialog');
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { updateUserIframe } = useAuth();
   const { toast } = useToast();
+
+  const formSchema = z.object({
+    iframeUrl: z
+      .string()
+      .url({ message: t('formValidation') })
+      .or(z.literal('')),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,8 +67,8 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
     setOpen(false);
 
     toast({
-      title: 'Success',
-      description: `Chart URL for ${user.email} has been updated.`,
+      title: t('successTitle'),
+      description: t('successDescription', { email: user.email }),
     });
   }
 
@@ -79,16 +77,16 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
           <Pencil className="mr-2 h-4 w-4" />
-          Edit
+          {t('edit')}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Assign Chart</DialogTitle>
+          <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>
-            Set or update the Chart URL for{' '}
-            <span className="font-medium">{user.email}</span>. Leave empty to
-            remove.
+            {t('description', {
+              email: <span className="font-medium">{user.email}</span>,
+            })}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -98,7 +96,7 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
               name="iframeUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Chart URL</FormLabel>
+                  <FormLabel>{t('formLabel')}</FormLabel>
                   <FormControl>
                     <Input placeholder="https://example.com" {...field} />
                   </FormControl>
@@ -109,7 +107,7 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Save Changes
+                {t('save')}
               </Button>
             </DialogFooter>
           </form>

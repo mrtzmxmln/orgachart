@@ -1,0 +1,81 @@
+
+{
+  "Header": {
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "logout": "Abmelden",
+    "login": "Anmelden",
+    "signUp": "Registrieren"
+  },
+  "LanguageSwitcher": {
+    "placeholder": "Sprache",
+    "en": "English",
+    "de": "Deutsch"
+  },
+  "Home": {
+    "title": "Visualisieren Sie Ihre Organisation",
+    "subtitle": "OrgaChart bietet eine einfache und leistungsstarke Lösung zum Erstellen und Verwalten von Organigrammen für Ihr Team. Sicher, skalierbar und einfach zu bedienen.",
+    "getStarted": "Kostenlos loslegen",
+    "accessDashboard": "Zum Dashboard"
+  },
+  "Admin": {
+    "title": "Admin-Bereich",
+    "description": "Verwalten Sie Benutzer und deren Diagrammzuweisungen.",
+    "noteTitle": "Admin-Hinweis",
+    "noteDescription": "Für diese Demonstration werden die Benutzerdaten im Speicher gehalten und zurückgesetzt, wenn der Auth-Provider neu initialisiert wird. Änderungen werden nicht auf dem Server gespeichert."
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "welcome": "Willkommen, {email}. Hier ist Ihr zugewiesener Inhalt.",
+    "chartTitle": "Benutzerspezifisches Diagramm",
+    "noChartTitle": "Kein Diagramm zugewiesen",
+    "noChartDescription": "Ihrem Konto ist derzeit kein Diagramm zugewiesen. Bitte kontaktieren Sie einen Administrator."
+  },
+  "AssignIframeDialog": {
+    "edit": "Bearbeiten",
+    "title": "Diagramm zuweisen",
+    "description": "Legen Sie die Diagramm-URL für {email} fest oder aktualisieren Sie sie. Leer lassen, um sie zu entfernen.",
+    "formLabel": "Diagramm-URL",
+    "formValidation": "Bitte geben Sie eine gültige URL ein.",
+    "save": "Änderungen speichern",
+    "successTitle": "Erfolg",
+    "successDescription": "Diagramm-URL für {email} wurde aktualisiert."
+  },
+  "UserTable": {
+    "email": "E-Mail",
+    "role": "Rolle",
+    "chartUrl": "Diagramm-URL",
+    "actions": "Aktionen",
+    "notSet": "Nicht festgelegt"
+  },
+  "LoginForm": {
+    "title": "Willkommen zurück",
+    "description": "Geben Sie Ihre Zugangsdaten ein, um auf Ihr Konto zuzugreifen.",
+    "emailLabel": "E-Mail",
+    "emailValidation": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "passwordLabel": "Passwort",
+    "passwordValidation": "Passwort ist erforderlich.",
+    "submit": "Anmelden",
+    "noAccount": "Sie haben noch kein Konto?",
+    "signUpLink": "Registrieren",
+    "successTitle": "Anmeldung erfolgreich",
+    "successDescription": "Willkommen zurück!",
+    "errorTitle": "Anmeldung fehlgeschlagen",
+    "errorDescription": "Ungültige E-Mail oder ungültiges Passwort. Bitte versuchen Sie es erneut."
+  },
+  "SignupForm": {
+    "title": "Konto erstellen",
+    "description": "Geben Sie Ihre Daten ein, um loszulegen.",
+    "emailLabel": "E-Mail",
+    "emailValidation": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "passwordLabel": "Passwort",
+    "passwordValidation": "Das Passwort muss mindestens 8 Zeichen lang sein.",
+    "submit": "Registrieren",
+    "hasAccount": "Haben Sie bereits ein Konto?",
+    "signInLink": "Anmelden",
+    "successTitle": "Registrierung erfolgreich",
+    "successDescription": "Ihr Konto wurde erstellt.",
+    "errorTitle": "Registrierung fehlgeschlagen",
+    "errorDescription": "Ein Konto mit dieser E-Mail existiert bereits."
+  }
+}

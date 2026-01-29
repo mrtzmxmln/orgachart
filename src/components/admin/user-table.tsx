@@ -13,8 +13,10 @@ import { useAuth } from '@/hooks/use-auth';
 import { AssignIframeDialog } from './assign-iframe-dialog';
 import type { User } from '@/lib/data';
 import { Card } from '../ui/card';
+import { useTranslations } from 'next-intl';
 
 export function UserTable() {
+  const t = useTranslations('UserTable');
   const { allUsers } = useAuth();
 
   return (
@@ -22,10 +24,10 @@ export function UserTable() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Chart URL</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead>{t('email')}</TableHead>
+            <TableHead>{t('role')}</TableHead>
+            <TableHead>{t('chartUrl')}</TableHead>
+            <TableHead className="text-right">{t('actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -48,7 +50,7 @@ export function UserTable() {
                     {user.iframeUrl}
                   </a>
                 ) : (
-                  <span className="text-muted-foreground">Not set</span>
+                  <span className="text-muted-foreground">{t('notSet')}</span>
                 )}
               </TableCell>
               <TableCell className="text-right">

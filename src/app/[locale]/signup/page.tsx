@@ -1,6 +1,3 @@
-// This page has been moved to src/app/[locale]/signup/page.tsx
-// to support internationalized routing.
-
 import SignupForm from '@/components/auth/signup-form';
 
 export default function SignupPage() {
