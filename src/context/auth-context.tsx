@@ -6,13 +6,11 @@ import type { User } from '@/lib/data';
 type UpdateUserData = {
   firstName: string;
   lastName: string;
-  email: string;
 };
 
 type UpdateUserByAdminData = {
   firstName: string;
   lastName: string;
-  email: string;
   role: 'user' | 'admin';
 };
 
@@ -35,8 +33,6 @@ export interface AuthContextType {
     userId: string,
     data: { firstName: string; lastName: string }
   ) => Promise<{ success: boolean; message: string }>;
-  allUsers: User[];
-  isUsersLoading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);

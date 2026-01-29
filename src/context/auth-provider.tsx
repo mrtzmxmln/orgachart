@@ -12,7 +12,6 @@ import {
   useAuth as useFirebaseAuth,
   useFirestore,
   useDoc,
-  useCollection,
   useMemoFirebase,
   setDocumentNonBlocking,
   updateDocumentNonBlocking,
@@ -22,7 +21,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
-import { doc, collection } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -39,9 +38,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return doc(firestore, 'users', authUser.uid);
   }, [firestore, authUser]);
   const { data: userProfile, isLoading: isProfileLoading } = useDoc<User>(userDocRef);
-  
-  const usersColRef = useMemoFirebase(() => collection(firestore, 'users'), [firestore]);
-  const { data: allUsers, isLoading: isUsersLoading } = useCollection<User>(usersColRef);
 
   const user = useMemo<User | null>(() => {
     if (!authUser || !userProfile) return null;
@@ -161,8 +157,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       login,
       logout,
       register,
-      allUsers: allUsers || [],
-      isUsersLoading,
       updateUserIframe,
       updateUserProfile,
       updateUserByAdmin,
@@ -175,8 +169,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       login,
       logout,
       register,
-      allUsers,
-      isUsersLoading,
       updateUserIframe,
       updateUserProfile,
       updateUserByAdmin,

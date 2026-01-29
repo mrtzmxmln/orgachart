@@ -9,16 +9,20 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { useAuth } from '@/hooks/use-auth';
 import { AssignIframeDialog } from './assign-iframe-dialog';
 import { Card } from '../ui/card';
 import { useTranslations } from 'next-intl';
 import { EditUserDialog } from './edit-user-dialog';
 import { Skeleton } from '../ui/skeleton';
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import { collection } from 'firebase/firestore';
+import type { User } from '@/lib/data';
 
 export function UserTable() {
   const t = useTranslations('UserTable');
-  const { allUsers, isUsersLoading } = useAuth();
+  const firestore = useFirestore();
+  const usersColRef = useMemoFirebase(() => collection(firestore, 'users'), [firestore]);
+  const { data: allUsers, isLoading: isUsersLoading } = useCollection<User>(usersColRef);
 
   if (isUsersLoading) {
     return (
@@ -59,7 +63,7 @@ export function UserTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {allUsers.map((user) => (
+          {(allUsers || []).map((user) => (
             <TableRow key={user.id}>
               <TableCell>
                  <div className="font-medium">{user.firstName} {user.lastName}</div>
