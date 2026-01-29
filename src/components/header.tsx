@@ -1,6 +1,7 @@
 'use client';
 
-import { Link, usePathname } from '@/navigation';
+import { Link, usePathname, useRouter, locales } from '@/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,6 +11,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
   LayoutDashboard,
@@ -18,15 +22,18 @@ import {
   ShieldCheck,
   UserPlus,
   Settings,
+  Globe,
+  Check,
 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import LanguageSwitcher from './language-switcher';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 export default function Header() {
   const t = useTranslations('Header');
+  const tLang = useTranslations('LanguageSwitcher');
   const { user, logout } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
+  const locale = useLocale();
 
   const isLinkActive = (href: string) => pathname === href;
 
@@ -40,6 +47,19 @@ export default function Header() {
     return '??';
   };
 
+  const handleLanguageChange = (newLocale: string) => {
+    router.replace(pathname, { locale: newLocale });
+  };
+
+  const languageSwitcherItems = locales.map((loc) => (
+    <DropdownMenuItem key={loc} onClick={() => handleLanguageChange(loc)}>
+      <div className="flex items-center justify-between w-full">
+        <span>{tLang(loc as 'en' | 'de')}</span>
+        {locale === loc && <Check className="h-4 w-4" />}
+      </div>
+    </DropdownMenuItem>
+  ));
+
   return (
     <header className="bg-card border-b sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,7 +68,7 @@ export default function Header() {
             OrgaChart
           </Link>
           <div className="flex items-center gap-2 sm:gap-4">
-             <nav className="hidden sm:flex items-center space-x-1">
+            <nav className="hidden sm:flex items-center space-x-1">
               {user && user.hasCompletedSetup && (
                 <>
                   <Button
@@ -77,8 +97,6 @@ export default function Header() {
               )}
             </nav>
 
-            <LanguageSwitcher />
-
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -104,17 +122,23 @@ export default function Header() {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {user.hasCompletedSetup && (
-                     <div className="sm:hidden">
+                    <div className="sm:hidden">
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard">
+                          <LayoutDashboard className="mr-2 h-4 w-4" />
+                          {t('dashboard')}
+                        </Link>
+                      </DropdownMenuItem>
+                      {user.role === 'admin' && (
                         <DropdownMenuItem asChild>
-                           <Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4" />{t('dashboard')}</Link>
+                          <Link href="/admin">
+                            <ShieldCheck className="mr-2 h-4 w-4" />
+                            {t('admin')}
+                          </Link>
                         </DropdownMenuItem>
-                        {user.role === 'admin' && (
-                           <DropdownMenuItem asChild>
-                              <Link href="/admin"><ShieldCheck className="mr-2 h-4 w-4" />{t('admin')}</Link>
-                           </DropdownMenuItem>
-                        )}
-                        <DropdownMenuSeparator />
-                     </div>
+                      )}
+                      <DropdownMenuSeparator />
+                    </div>
                   )}
                   <DropdownMenuItem asChild>
                     <Link href="/profile">
@@ -122,6 +146,15 @@ export default function Header() {
                       {t('profile')}
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      <Globe className="mr-2 h-4 w-4" />
+                      <span>{tLang('placeholder')}</span>
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      {languageSwitcherItems}
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={logout}>
                     <LogOut className="mr-2 h-4 w-4" />
@@ -131,6 +164,19 @@ export default function Header() {
               </DropdownMenu>
             ) : (
               <div className="flex items-center gap-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm" className="gap-1">
+                      <Globe />
+                      <span className="hidden md:inline">
+                        {locale.toUpperCase()}
+                      </span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    {languageSwitcherItems}
+                  </DropdownMenuContent>
+                </DropdownMenu>
                 <Button asChild variant="ghost" size="sm">
                   <Link href="/login">
                     <LogIn className="md:mr-2" />
