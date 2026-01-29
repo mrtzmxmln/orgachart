@@ -1,3 +1,50 @@
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+
 export default function Home() {
-  return <></>;
+  const heroImage = PlaceHolderImages.find((img) => img.id === 'hero');
+
+  return (
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
+      <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="space-y-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-headline font-bold tracking-tighter text-primary">
+            Manage Your Frames, Seamlessly
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            iFrame Manager provides a simple and powerful solution to assign and
+            display personalized content to your users. Secure, scalable, and
+            easy to use.
+          </p>
+          <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+            <Button asChild size="lg">
+              <Link href="/signup">Get Started for Free</Link>
+            </Button>
+            <Button asChild variant="secondary" size="lg">
+              <Link href="/login">Access Your Dashboard</Link>
+            </Button>
+          </div>
+        </div>
+        <div className="relative">
+          {heroImage && (
+            <Card className="overflow-hidden shadow-2xl rounded-2xl transform hover:scale-105 transition-transform duration-300">
+              <CardContent className="p-0">
+                <Image
+                  src={heroImage.imageUrl}
+                  alt={heroImage.description}
+                  data-ai-hint={heroImage.imageHint}
+                  width={1200}
+                  height={600}
+                  className="object-cover w-full h-full"
+                />
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
