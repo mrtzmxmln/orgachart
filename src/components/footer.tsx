@@ -1,13 +1,18 @@
 'use client';
 
 import { useAuth } from '@/hooks/use-auth';
-import { Link } from '@/navigation';
+import { Link, usePathname } from '@/navigation';
 import LanguageSwitcher from '@/components/language-switcher';
 import { useTranslations } from 'next-intl';
 
 export default function Footer() {
   const t = useTranslations('Footer');
   const { user } = useAuth();
+  const pathname = usePathname();
+
+  if (pathname === '/dashboard') {
+    return null;
+  }
 
   return (
     <footer className="bg-card border-t mt-auto">
