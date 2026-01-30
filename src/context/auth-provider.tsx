@@ -22,6 +22,7 @@ import {
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
+  unlink,
 } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
@@ -45,6 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!authUser || !userProfile) return null;
     return {
       id: authUser.uid,
+      providerData: authUser.providerData,
       ...userProfile
     };
   }, [authUser, userProfile]);
@@ -56,7 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       case 'auth/invalid-email':
         return 'The email address is not valid.';
       case 'auth/operation-not-allowed':
-        return 'Email/password accounts are not enabled.';
+        return 'You cannot unlink your only sign-in method.';
       case 'auth/weak-password':
         return 'The password is too weak.';
       case 'auth/user-disabled':
@@ -66,6 +68,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return 'Invalid email or password.';
       case 'auth/account-exists-with-different-credential':
         return 'An account already exists with the same email address but different sign-in credentials.';
+      case 'auth/requires-recent-login':
+        return 'This operation is sensitive and requires recent authentication. Please log in again before retrying.'
       default:
         return 'An unexpected error occurred. Please try again.';
     }
@@ -190,6 +194,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }, [firestore]);
 
+  const unlinkGoogleProvider: AuthContextType['unlinkGoogleProvider'] = useCallback(async () => {
+    if (!auth.currentUser) {
+      return { success: false, message: 'You must be logged in to perform this action.' };
+    }
+
+    const googleProvider = auth.currentUser.providerData.find(
+      (p) => p.providerId === 'google.com'
+    );
+    
+    if (!googleProvider) {
+       return { success: false, message: 'Google account is not linked.' };
+    }
+
+    if (auth.currentUser.providerData.length === 1) {
+      return { success: false, message: 'You cannot unlink your only sign-in method.' };
+    }
+
+    try {
+      await unlink(auth.currentUser, 'google.com');
+      return { success: true, message: 'Google account unlinked successfully.' };
+    } catch (error: any) {
+      return { success: false, message: getErrorMessage(error.code) };
+    }
+  }, [auth]);
+
 
   const value = useMemo(
     () => ({
@@ -203,6 +232,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       updateUserProfile,
       updateUserByAdmin,
       completeInitialSetup,
+      unlinkGoogleProvider,
     }),
     [
       user,
@@ -216,6 +246,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       updateUserProfile,
       updateUserByAdmin,
       completeInitialSetup,
+      unlinkGoogleProvider,
     ]
   );
 

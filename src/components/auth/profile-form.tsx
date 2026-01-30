@@ -20,16 +20,34 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512" fill="currentColor" {...props}>
+        <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 126 23.4 172.9 61.9l-76.2 76.2C307.4 102.4 279.8 88 248 88c-86.5 0-157.3 70.8-157.3 157.3S161.5 424 248 424c48.4 0 88.3-20.4 114.7-44.9l76.2 76.2C399.1 487.6 329.8 512 248 512z" />
+    </svg>
+)
+
 export default function ProfileForm() {
   const t = useTranslations('ProfileForm');
   const [isLoading, setIsLoading] = useState(false);
-  const { user, updateUserProfile } = useAuth();
+  const [isUnlinkAlertOpen, setIsUnlinkAlertOpen] = useState(false);
+  const [isUnlinking, setIsUnlinking] = useState(false);
+  const { user, updateUserProfile, unlinkGoogleProvider } = useAuth();
   const { toast } = useToast();
 
   const formSchema = z.object({
@@ -81,7 +99,31 @@ export default function ProfileForm() {
     }
   }
 
+  const googleProvider = user?.providerData?.find(p => p.providerId === 'google.com');
+
+  async function handleUnlinkGoogle() {
+    setIsUnlinking(true);
+    const result = await unlinkGoogleProvider();
+
+    if (result.success) {
+      toast({
+        title: t('unlinkSuccessTitle'),
+        description: t('unlinkSuccessDescription'),
+      });
+    } else {
+      toast({
+        variant: 'destructive',
+        title: t('errorTitle'),
+        description: result.message,
+      });
+    }
+    setIsUnlinking(false);
+    setIsUnlinkAlertOpen(false);
+  }
+
+
   return (
+    <>
     <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
             <Card>
@@ -140,5 +182,46 @@ export default function ProfileForm() {
             </Card>
         </form>
     </Form>
+
+    {googleProvider && (
+      <Card className="mt-6">
+          <CardHeader>
+              <CardTitle>{t('linkedAccountsTitle')}</CardTitle>
+          </CardHeader>
+          <CardContent>
+              <div className="flex items-center justify-between p-4 border rounded-lg bg-card">
+                  <div className="flex items-center gap-4">
+                      <GoogleIcon className="h-6 w-6 text-muted-foreground" />
+                      <div className="flex flex-col">
+                          <span className="font-medium">Google</span>
+                          <span className="text-sm text-muted-foreground">{googleProvider.email}</span>
+                      </div>
+                  </div>
+                  <Button variant="outline" onClick={() => setIsUnlinkAlertOpen(true)} disabled={isUnlinking}>
+                      {t('unlink')}
+                  </Button>
+              </div>
+          </CardContent>
+      </Card>
+    )}
+
+    <AlertDialog open={isUnlinkAlertOpen} onOpenChange={setIsUnlinkAlertOpen}>
+      <AlertDialogContent>
+          <AlertDialogHeader>
+          <AlertDialogTitle>{t('unlinkConfirmTitle')}</AlertDialogTitle>
+          <AlertDialogDescription>
+              {t('unlinkConfirmDescription')}
+          </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+          <AlertDialogCancel disabled={isUnlinking}>{t('unlinkCancel')}</AlertDialogCancel>
+          <AlertDialogAction onClick={handleUnlinkGoogle} disabled={isUnlinking}>
+              {isUnlinking && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {t('unlinkContinue')}
+          </AlertDialogAction>
+          </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+    </>
   );
 }

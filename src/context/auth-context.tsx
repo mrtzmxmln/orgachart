@@ -34,6 +34,7 @@ export interface AuthContextType {
     userId: string,
     data: { firstName: string; lastName: string }
   ) => Promise<{ success: boolean; message: string }>;
+  unlinkGoogleProvider: () => Promise<{ success: boolean; message: string }>;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);

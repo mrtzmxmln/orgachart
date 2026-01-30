@@ -112,7 +112,15 @@
     "successTitle": "Profil aktualisiert",
     "successDescription": "Ihre Informationen wurden erfolgreich aktualisiert.",
     "errorTitle": "Aktualisierung fehlgeschlagen",
-    "notLoggedInError": "Sie müssen hierfür angemeldet sein."
+    "notLoggedInError": "Sie müssen hierfür angemeldet sein.",
+    "linkedAccountsTitle": "Verknüpfte Konten",
+    "unlink": "Trennen",
+    "unlinkConfirmTitle": "Google-Konto trennen?",
+    "unlinkConfirmDescription": "Dies entfernt Google als Anmeldemethode. Wenn Sie für dieses Konto kein Passwort festgelegt haben, müssen Sie den 'Passwort vergessen'-Vorgang verwenden, um sich anzumelden.",
+    "unlinkCancel": "Abbrechen",
+    "unlinkContinue": "Trennen",
+    "unlinkSuccessTitle": "Konto getrennt",
+    "unlinkSuccessDescription": "Ihr Google-Konto wurde erfolgreich getrennt."
   },
   "EditUserDialog": {
     "editUser": "Benutzer bearbeiten",

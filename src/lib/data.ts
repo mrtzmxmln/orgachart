@@ -9,4 +9,5 @@ export type User = {
   firstName: string;
   lastName: string;
   hasCompletedSetup: boolean;
+  providerData?: { providerId: string; email?: string | null; displayName?: string | null; photoURL?: string | null; uid: string }[];
 };

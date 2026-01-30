@@ -112,7 +112,15 @@
     "successTitle": "Profile Updated",
     "successDescription": "Your information has been successfully updated.",
     "errorTitle": "Update Failed",
-    "notLoggedInError": "You must be logged in to do this."
+    "notLoggedInError": "You must be logged in to do this.",
+    "linkedAccountsTitle": "Linked Accounts",
+    "unlink": "Unlink",
+    "unlinkConfirmTitle": "Unlink Google Account?",
+    "unlinkConfirmDescription": "This will remove Google as a sign-in method. If you don't have a password set for this account, you will need to use the 'Forgot Password' flow to sign in.",
+    "unlinkCancel": "Cancel",
+    "unlinkContinue": "Unlink",
+    "unlinkSuccessTitle": "Account Unlinked",
+    "unlinkSuccessDescription": "Your Google account has been successfully unlinked."
   },
   "EditUserDialog": {
     "editUser": "Edit User",
