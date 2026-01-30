@@ -35,7 +35,7 @@ export default function ImprintPage() {
           <p>
             {t('registerCourt')}: Amtsgericht Traunstein
             <br />
-            {t('registerNumber')}: HRB 24850
+            {t('registrationNumber')}: HRB 24850
           </p>
 
           <h2 className="text-xl font-semibold text-foreground">{t('vatTitle')}</h2>
