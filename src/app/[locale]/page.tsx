@@ -24,7 +24,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             {user ? (
               <Button asChild size="lg">
-                <Link href="/dashboard">{t('accessDashboard')}</Link>
+                <Link href="/dashboard">{t('accessOrgaChart')}</Link>
               </Button>
             ) : (
               <>
@@ -32,7 +32,7 @@ export default function Home() {
                   <Link href="/signup">{t('getStarted')}</Link>
                 </Button>
                 <Button asChild variant="secondary" size="lg">
-                  <Link href="/login">{t('accessDashboard')}</Link>
+                  <Link href="/login">{t('accessOrgaChart')}</Link>
                 </Button>
               </>
             )}

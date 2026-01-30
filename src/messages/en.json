@@ -1,7 +1,7 @@
 
 {
   "Header": {
-    "dashboard": "OrgaChart",
+    "orgaChart": "OrgaChart",
     "admin": "Admin",
     "logout": "Logout",
     "login": "Login",
@@ -17,7 +17,7 @@
     "title": "Visualize Your Organization",
     "subtitle": "OrgaChart provides a simple and powerful solution to create and manage organizational charts for your team. Secure, scalable, and easy to use.",
     "getStarted": "Get Started for Free",
-    "accessDashboard": "Access Your OrgaChart"
+    "accessOrgaChart": "Access Your OrgaChart"
   },
   "Admin": {
     "title": "Admin Panel",

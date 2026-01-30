@@ -16,7 +16,7 @@ import {
   DropdownMenuSubTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  LayoutDashboard,
+  Network,
   LogIn,
   LogOut,
   ShieldCheck,
@@ -73,12 +73,12 @@ export default function Header() {
                 <>
                   <Button
                     asChild
-                    variant={isLinkActive('/dashboard') ? 'default' : 'ghost'}
+                    variant={isLinkActive('/orgachart') ? 'default' : 'ghost'}
                     size="sm"
                   >
-                    <Link href="/dashboard">
-                      <LayoutDashboard className="mr-2 h-4 w-4" />
-                      {t('dashboard')}
+                    <Link href="/orgachart">
+                      <Network className="mr-2 h-4 w-4" />
+                      {t('orgaChart')}
                     </Link>
                   </Button>
                   {user.role === 'admin' && (
@@ -124,9 +124,9 @@ export default function Header() {
                   {user.hasCompletedSetup && (
                     <div className="sm:hidden">
                       <DropdownMenuItem asChild>
-                        <Link href="/dashboard">
-                          <LayoutDashboard className="mr-2 h-4 w-4" />
-                          {t('dashboard')}
+                        <Link href="/orgachart">
+                          <Network className="mr-2 h-4 w-4" />
+                          {t('orgaChart')}
                         </Link>
                       </DropdownMenuItem>
                       {user.role === 'admin' && (
