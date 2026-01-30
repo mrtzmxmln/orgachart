@@ -10,7 +10,7 @@ export default function Footer() {
   const { user } = useAuth();
   const pathname = usePathname();
 
-  if (pathname === '/dashboard') {
+  if (pathname === '/orgachart') {
     return null;
   }
 
