@@ -120,7 +120,11 @@
     "unlinkCancel": "Abbrechen",
     "unlinkContinue": "Trennen",
     "unlinkSuccessTitle": "Konto getrennt",
-    "unlinkSuccessDescription": "Ihr Google-Konto wurde erfolgreich getrennt."
+    "unlinkSuccessDescription": "Ihr Google-Konto wurde erfolgreich getrennt.",
+    "notLinked": "Nicht verknüpft",
+    "linkAccount": "Konto verknüpfen",
+    "linkSuccessTitle": "Konto verknüpft",
+    "linkSuccessDescription": "Ihr Google-Konto wurde erfolgreich verknüpft."
   },
   "EditUserDialog": {
     "editUser": "Benutzer bearbeiten",

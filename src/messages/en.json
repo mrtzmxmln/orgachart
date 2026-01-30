@@ -120,7 +120,11 @@
     "unlinkCancel": "Cancel",
     "unlinkContinue": "Unlink",
     "unlinkSuccessTitle": "Account Unlinked",
-    "unlinkSuccessDescription": "Your Google account has been successfully unlinked."
+    "unlinkSuccessDescription": "Your Google account has been successfully unlinked.",
+    "notLinked": "Not linked",
+    "linkAccount": "Link Account",
+    "linkSuccessTitle": "Account Linked",
+    "linkSuccessDescription": "Your Google account has been successfully linked."
   },
   "EditUserDialog": {
     "editUser": "Edit User",

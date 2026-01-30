@@ -23,6 +23,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   unlink,
+  linkWithPopup,
 } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
@@ -70,6 +71,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return 'An account already exists with the same email address but different sign-in credentials.';
       case 'auth/requires-recent-login':
         return 'This operation is sensitive and requires recent authentication. Please log in again before retrying.'
+      case 'auth/credential-already-in-use':
+        return 'This Google account is already linked to another user.';
       default:
         return 'An unexpected error occurred. Please try again.';
     }
@@ -219,6 +222,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [auth]);
 
+  const linkGoogleProvider: AuthContextType['linkGoogleProvider'] = useCallback(async () => {
+    if (!auth.currentUser) {
+      return { success: false, message: 'You must be logged in to perform this action.' };
+    }
+
+    const provider = new GoogleAuthProvider();
+
+    try {
+      await linkWithPopup(auth.currentUser, provider);
+      return { success: true, message: 'Google account linked successfully.' };
+    } catch (error: any) {
+      return { success: false, message: getErrorMessage(error.code) };
+    }
+  }, [auth]);
 
   const value = useMemo(
     () => ({
@@ -233,6 +250,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       updateUserByAdmin,
       completeInitialSetup,
       unlinkGoogleProvider,
+      linkGoogleProvider,
     }),
     [
       user,
@@ -247,6 +265,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       updateUserByAdmin,
       completeInitialSetup,
       unlinkGoogleProvider,
+      linkGoogleProvider,
     ]
   );
 

@@ -47,7 +47,8 @@ export default function ProfileForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [isUnlinkAlertOpen, setIsUnlinkAlertOpen] = useState(false);
   const [isUnlinking, setIsUnlinking] = useState(false);
-  const { user, updateUserProfile, unlinkGoogleProvider } = useAuth();
+  const [isLinking, setIsLinking] = useState(false);
+  const { user, updateUserProfile, unlinkGoogleProvider, linkGoogleProvider } = useAuth();
   const { toast } = useToast();
 
   const formSchema = z.object({
@@ -121,6 +122,24 @@ export default function ProfileForm() {
     setIsUnlinkAlertOpen(false);
   }
 
+  async function handleLinkGoogle() {
+    setIsLinking(true);
+    const result = await linkGoogleProvider();
+
+    if (result.success) {
+      toast({
+        title: t('linkSuccessTitle'),
+        description: t('linkSuccessDescription'),
+      });
+    } else {
+      toast({
+        variant: 'destructive',
+        title: t('errorTitle'),
+        description: result.message,
+      });
+    }
+    setIsLinking(false);
+  }
 
   return (
     <>
@@ -183,27 +202,39 @@ export default function ProfileForm() {
         </form>
     </Form>
 
-    {googleProvider && (
-      <Card className="mt-6">
-          <CardHeader>
-              <CardTitle>{t('linkedAccountsTitle')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-              <div className="flex items-center justify-between p-4 border rounded-lg bg-card">
-                  <div className="flex items-center gap-4">
-                      <GoogleIcon className="h-6 w-6 text-muted-foreground" />
+    <Card className="mt-6">
+        <CardHeader>
+            <CardTitle>{t('linkedAccountsTitle')}</CardTitle>
+        </CardHeader>
+        <CardContent>
+            <div className="flex items-center justify-between p-4 border rounded-lg bg-card">
+                <div className="flex items-center gap-4">
+                    <GoogleIcon className="h-6 w-6 text-muted-foreground" />
+                    {googleProvider ? (
                       <div className="flex flex-col">
                           <span className="font-medium">Google</span>
                           <span className="text-sm text-muted-foreground">{googleProvider.email}</span>
                       </div>
-                  </div>
+                    ) : (
+                      <div className="flex flex-col">
+                        <span className="font-medium">Google</span>
+                        <span className="text-sm text-muted-foreground">{t('notLinked')}</span>
+                      </div>
+                    )}
+                </div>
+                {googleProvider ? (
                   <Button variant="outline" onClick={() => setIsUnlinkAlertOpen(true)} disabled={isUnlinking}>
                       {t('unlink')}
                   </Button>
-              </div>
-          </CardContent>
-      </Card>
-    )}
+                ) : (
+                  <Button variant="outline" onClick={handleLinkGoogle} disabled={isLinking}>
+                      {isLinking && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                      {t('linkAccount')}
+                  </Button>
+                )}
+            </div>
+        </CardContent>
+    </Card>
 
     <AlertDialog open={isUnlinkAlertOpen} onOpenChange={setIsUnlinkAlertOpen}>
       <AlertDialogContent>
