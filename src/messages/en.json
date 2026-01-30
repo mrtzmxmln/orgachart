@@ -1,7 +1,7 @@
 
 {
   "Header": {
-    "dashboard": "Dashboard",
+    "dashboard": "OrgaChart",
     "admin": "Admin",
     "logout": "Logout",
     "login": "Login",
@@ -17,35 +17,35 @@
     "title": "Visualize Your Organization",
     "subtitle": "OrgaChart provides a simple and powerful solution to create and manage organizational charts for your team. Secure, scalable, and easy to use.",
     "getStarted": "Get Started for Free",
-    "accessDashboard": "Access Your Dashboard"
+    "accessDashboard": "Access Your OrgaChart"
   },
   "Admin": {
     "title": "Admin Panel",
     "description": "Manage users and their chart assignments."
   },
   "Dashboard": {
-    "title": "Dashboard",
+    "title": "OrgaChart",
     "welcome": "Welcome, {name}. Here is your assigned content.",
-    "chartTitle": "User Specific Chart",
-    "noChartTitle": "No Chart Assigned",
-    "noChartDescription": "There is currently no chart assigned to your account. Please contact an administrator."
+    "chartTitle": "User Specific OrgaChart",
+    "noChartTitle": "No OrgaChart Assigned",
+    "noChartDescription": "There is currently no OrgaChart assigned to your account. Please contact an administrator."
   },
   "AssignIframeDialog": {
-    "assignChart": "Assign Chart",
-    "title": "Assign Chart",
-    "description": "Set or update the Chart URL for {name}. Leave empty to remove.",
-    "formLabel": "Chart URL",
+    "assignChart": "Assign OrgaChart",
+    "title": "Assign OrgaChart",
+    "description": "Set or update the OrgaChart URL for {name}. Leave empty to remove.",
+    "formLabel": "OrgaChart URL",
     "formValidation": "Please enter a valid URL.",
     "save": "Save Changes",
     "successTitle": "Success",
-    "successDescription": "Chart URL for {name} has been updated.",
+    "successDescription": "OrgaChart URL for {name} has been updated.",
     "errorTitle": "Error"
   },
   "UserTable": {
     "user": "User",
     "email": "Email",
     "role": "Role",
-    "chartUrl": "Chart URL",
+    "chartUrl": "OrgaChart URL",
     "actions": "Actions",
     "notSet": "Not set"
   },

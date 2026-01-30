@@ -7,7 +7,7 @@ export const pathnames = {
   '/': '/',
   '/login': '/login',
   '/signup': '/signup',
-  '/dashboard': '/dashboard',
+  '/dashboard': '/orgachart',
   '/admin': '/admin',
   '/profile': '/profile',
   '/complete-setup': '/complete-setup',
