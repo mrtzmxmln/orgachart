@@ -33,7 +33,7 @@
   "AssignIframeDialog": {
     "assignChart": "Assign OrgaChart",
     "title": "Assign OrgaChart",
-    "description": "Set or update the OrgaChart URL for {name}. Leave empty to remove.",
+    "description": "Set or update the OrgaChart URL for <name/>. Leave empty to remove.",
     "formLabel": "OrgaChart URL",
     "formValidation": "Please enter a valid URL.",
     "save": "Save Changes",
@@ -117,7 +117,7 @@
   "EditUserDialog": {
     "editUser": "Edit User",
     "title": "Edit User Information",
-    "description": "Update the details for {name}. Click save when you're done.",
+    "description": "Update the details for <name/>. Click save when you're done.",
     "firstNameLabel": "First Name",
     "lastNameLabel": "Last Name",
     "emailLabel": "Email",

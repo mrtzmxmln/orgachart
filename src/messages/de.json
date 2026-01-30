@@ -33,7 +33,7 @@
   "AssignIframeDialog": {
     "assignChart": "OrgaChart zuweisen",
     "title": "OrgaChart zuweisen",
-    "description": "Legen Sie die OrgaChart-URL für {name} fest oder aktualisieren Sie sie. Leer lassen, um sie zu entfernen.",
+    "description": "Legen Sie die OrgaChart-URL für <name/> fest oder aktualisieren Sie sie. Leer lassen, um sie zu entfernen.",
     "formLabel": "OrgaChart-URL",
     "formValidation": "Bitte geben Sie eine gültige URL ein.",
     "save": "Änderungen speichern",
@@ -117,7 +117,7 @@
   "EditUserDialog": {
     "editUser": "Benutzer bearbeiten",
     "title": "Benutzerinformationen bearbeiten",
-    "description": "Aktualisieren Sie die Details für {name}. Klicken Sie auf 'Speichern', wenn Sie fertig sind.",
+    "description": "Aktualisieren Sie die Details für <name/>. Klicken Sie auf 'Speichern', wenn Sie fertig sind.",
     "firstNameLabel": "Vorname",
     "lastNameLabel": "Nachname",
     "emailLabel": "E-Mail",

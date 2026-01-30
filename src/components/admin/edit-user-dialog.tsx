@@ -107,8 +107,8 @@ export function EditUserDialog({ user }: EditUserDialogProps) {
         <DialogHeader>
           <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>
-            {t('description', {
-              name: <span className="font-medium">{user.firstName} {user.lastName}</span>,
+            {t.rich('description', {
+              name: () => <span className="font-medium">{user.firstName} {user.lastName}</span>,
             })}
           </DialogDescription>
         </DialogHeader>
