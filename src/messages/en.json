@@ -23,7 +23,7 @@
     "title": "Admin Panel",
     "description": "Manage users and their chart assignments."
   },
-  "Dashboard": {
+  "OrgaChart": {
     "title": "OrgaChart",
     "welcome": "Welcome, {name}. Here is your assigned content.",
     "chartTitle": "User Specific OrgaChart",

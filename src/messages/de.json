@@ -23,7 +23,7 @@
     "title": "Admin-Bereich",
     "description": "Verwalten Sie Benutzer und deren Diagrammzuweisungen."
   },
-  "Dashboard": {
+  "OrgaChart": {
     "title": "OrgaChart",
     "welcome": "Willkommen, {name}. Hier ist Ihr zugewiesener Inhalt.",
     "chartTitle": "Benutzerspezifisches OrgaChart",
