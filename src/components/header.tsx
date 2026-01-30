@@ -76,7 +76,7 @@ export default function Header() {
                     variant={isLinkActive('/orgachart') ? 'default' : 'ghost'}
                     size="sm"
                   >
-                    <Link href="/orgachart">
+                    <Link href="/dashboard">
                       <Network className="mr-2 h-4 w-4" />
                       {t('orgaChart')}
                     </Link>
@@ -124,7 +124,7 @@ export default function Header() {
                   {user.hasCompletedSetup && (
                     <div className="sm:hidden">
                       <DropdownMenuItem asChild>
-                        <Link href="/orgachart">
+                        <Link href="/dashboard">
                           <Network className="mr-2 h-4 w-4" />
                           {t('orgaChart')}
                         </Link>
