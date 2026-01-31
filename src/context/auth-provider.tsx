@@ -221,7 +221,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     try {
       await unlink(auth.currentUser, 'google.com');
-      window.location.reload();
       return { success: true, message: 'Google account unlinked successfully.' };
     } catch (error: any) {
       return { success: false, message: getErrorMessage(error.code) };
@@ -240,7 +239,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     try {
       await linkWithPopup(auth.currentUser, provider);
-      window.location.reload();
       return { success: true, message: 'Google account linked successfully.' };
     } catch (error: any) {
       return { success: false, message: getErrorMessage(error.code) };
