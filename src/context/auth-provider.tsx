@@ -97,6 +97,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   
   const loginWithGoogle: AuthContextType['loginWithGoogle'] = useCallback(async () => {
     const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({
+      prompt: 'select_account'
+    });
     try {
       const result = await signInWithPopup(auth, provider);
       const gUser = result.user;
@@ -218,11 +221,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     try {
       await unlink(auth.currentUser, 'google.com');
+      router.refresh();
       return { success: true, message: 'Google account unlinked successfully.' };
     } catch (error: any) {
       return { success: false, message: getErrorMessage(error.code) };
     }
-  }, [auth]);
+  }, [auth, router]);
 
   const linkGoogleProvider: AuthContextType['linkGoogleProvider'] = useCallback(async () => {
     if (!auth.currentUser) {
@@ -230,14 +234,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({
+      prompt: 'select_account'
+    });
 
     try {
       await linkWithPopup(auth.currentUser, provider);
+      router.refresh();
       return { success: true, message: 'Google account linked successfully.' };
     } catch (error: any) {
       return { success: false, message: getErrorMessage(error.code) };
     }
-  }, [auth]);
+  }, [auth, router]);
 
   const value = useMemo(
     () => ({
