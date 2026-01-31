@@ -1,6 +1,4 @@
-// This page has been moved to src/app/[locale]/dashboard/page.tsx
-// to support internationalized routing.
-
+// This page is now located at src/app/orgachart/page.tsx
 export default function Page() {
   return null;
 }

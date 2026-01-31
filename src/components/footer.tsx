@@ -1,12 +1,10 @@
 'use client';
 
 import { useAuth } from '@/hooks/use-auth';
-import { Link, usePathname } from '@/navigation';
-import LanguageSwitcher from '@/components/language-switcher';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
-  const t = useTranslations('Footer');
   const { user } = useAuth();
   const pathname = usePathname();
 
@@ -21,9 +19,8 @@ export default function Footer() {
           <p>&copy; {new Date().getFullYear()} OrgaChart by Organic Concepts</p>
           <nav className="flex items-center gap-4">
             <Link href="/imprint" className="hover:text-primary">
-              {t('imprint')}
+              Impressum
             </Link>
-            {!user && <LanguageSwitcher />}
           </nav>
         </div>
       </div>

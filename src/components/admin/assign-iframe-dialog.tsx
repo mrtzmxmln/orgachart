@@ -27,14 +27,12 @@ import { useAuth } from '@/hooks/use-auth';
 import type { User } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Network } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
 type AssignIframeDialogProps = {
   user: User;
 }
 
 export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
-  const t = useTranslations('AssignIframeDialog');
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { updateUserIframe } = useAuth();
@@ -43,7 +41,7 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
   const formSchema = z.object({
     iframeUrl: z
       .string()
-      .url({ message: t('formValidation') })
+      .url({ message: 'Bitte geben Sie eine gültige URL ein.' })
       .or(z.literal('')),
   });
 
@@ -70,13 +68,13 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
     if (result.success) {
       setOpen(false);
       toast({
-        title: t('successTitle'),
-        description: t('successDescription', { name: `${user.firstName} ${user.lastName}` }),
+        title: 'Erfolg',
+        description: `OrgaChart-URL für ${user.firstName} ${user.lastName} wurde aktualisiert.`,
       });
     } else {
       toast({
         variant: 'destructive',
-        title: t('errorTitle'),
+        title: 'Fehler',
         description: result.message,
       });
     }
@@ -87,16 +85,14 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
           <Network className="mr-2 h-4 w-4" />
-          {t('assignChart')}
+          OrgaChart zuweisen
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogTitle>OrgaChart zuweisen</DialogTitle>
           <DialogDescription>
-            {t.rich('description', {
-              name: () => <span className="font-medium">{user.firstName} {user.lastName}</span>
-            })}
+            Legen Sie die OrgaChart-URL für <span className="font-medium">{user.firstName} {user.lastName}</span> fest oder aktualisieren Sie sie. Leer lassen, um sie zu entfernen.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -106,7 +102,7 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
               name="iframeUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('formLabel')}</FormLabel>
+                  <FormLabel>OrgaChart-URL</FormLabel>
                   <FormControl>
                     <Input placeholder="https://example.com" {...field} />
                   </FormControl>
@@ -117,7 +113,7 @@ export function AssignIframeDialog({ user }: AssignIframeDialogProps) {
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {t('save')}
+                Änderungen speichern
               </Button>
             </DialogFooter>
           </form>

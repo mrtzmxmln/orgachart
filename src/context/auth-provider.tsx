@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useMemo } from 'react';
-import { useRouter } from '@/navigation';
+import { useRouter } from 'next/navigation';
 import type { User } from '@/lib/data';
 import {
   AuthContext,
@@ -55,26 +55,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const getErrorMessage = (errorCode: string): string => {
     switch (errorCode) {
       case 'auth/email-already-in-use':
-        return 'This email address is already in use.';
+        return 'Diese E-Mail-Adresse wird bereits verwendet.';
       case 'auth/invalid-email':
-        return 'The email address is not valid.';
+        return 'Die E-Mail-Adresse ist ungültig.';
       case 'auth/operation-not-allowed':
-        return 'You cannot unlink your only sign-in method.';
+        return 'Sie können nicht Ihre einzige Anmeldemethode entfernen.';
       case 'auth/weak-password':
-        return 'The password is too weak.';
+        return 'Das Passwort ist zu schwach.';
       case 'auth/user-disabled':
-        return 'This user account has been disabled.';
+        return 'Dieses Benutzerkonto wurde deaktiviert.';
       case 'auth/user-not-found':
       case 'auth/wrong-password':
-        return 'Invalid email or password.';
+        return 'Ungültige E-Mail oder Passwort.';
       case 'auth/account-exists-with-different-credential':
-        return 'An account already exists with the same email address but different sign-in credentials.';
+        return 'Ein Konto mit derselben E-Mail-Adresse, aber unterschiedlichen Anmeldeinformationen existiert bereits.';
       case 'auth/requires-recent-login':
-        return 'This operation is sensitive and requires recent authentication. Please log in again before retrying.'
+        return 'Dieser Vorgang ist sensibel und erfordert eine kürzliche Authentifizierung. Bitte melden Sie sich erneut an, bevor Sie es erneut versuchen.'
       case 'auth/credential-already-in-use':
-        return 'This Google account is already linked to another user.';
+        return 'Dieses Google-Konto ist bereits mit einem anderen Benutzer verknüpft.';
       default:
-        return 'An unexpected error occurred. Please try again.';
+        return 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.';
     }
   };
 

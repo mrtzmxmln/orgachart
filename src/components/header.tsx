@@ -1,7 +1,7 @@
 'use client';
 
-import { Link, usePathname, useRouter, locales } from '@/navigation';
-import { useLocale, useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,9 +11,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
   Network,
@@ -22,18 +19,13 @@ import {
   ShieldCheck,
   UserPlus,
   Settings,
-  Globe,
-  Check,
 } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 export default function Header() {
-  const t = useTranslations('Header');
-  const tLang = useTranslations('LanguageSwitcher');
   const { user, logout } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
-  const locale = useLocale();
 
   const isLinkActive = (href: string) => pathname === href;
 
@@ -46,19 +38,6 @@ export default function Header() {
     }
     return '??';
   };
-
-  const handleLanguageChange = (newLocale: string) => {
-    router.replace(pathname, { locale: newLocale });
-  };
-
-  const languageSwitcherItems = locales.map((loc) => (
-    <DropdownMenuItem key={loc} onClick={() => handleLanguageChange(loc)}>
-      <div className="flex items-center justify-between w-full">
-        <span>{tLang(loc as 'en' | 'de')}</span>
-        {locale === loc && <Check className="h-4 w-4" />}
-      </div>
-    </DropdownMenuItem>
-  ));
 
   return (
     <header className="bg-card border-b sticky top-0 z-50">
@@ -76,9 +55,9 @@ export default function Header() {
                     variant={isLinkActive('/orgachart') ? 'default' : 'ghost'}
                     size="sm"
                   >
-                    <Link href="/dashboard">
+                    <Link href="/orgachart">
                       <Network className="mr-2 h-4 w-4" />
-                      {t('orgaChart')}
+                      OrgaChart
                     </Link>
                   </Button>
                   {user.role === 'admin' && (
@@ -89,7 +68,7 @@ export default function Header() {
                     >
                       <Link href="/admin">
                         <ShieldCheck className="mr-2 h-4 w-4" />
-                        {t('admin')}
+                        Admin
                       </Link>
                     </Button>
                   )}
@@ -124,16 +103,16 @@ export default function Header() {
                   {user.hasCompletedSetup && (
                     <div className="sm:hidden">
                       <DropdownMenuItem asChild>
-                        <Link href="/dashboard">
+                        <Link href="/orgachart">
                           <Network className="mr-2 h-4 w-4" />
-                          {t('orgaChart')}
+                          OrgaChart
                         </Link>
                       </DropdownMenuItem>
                       {user.role === 'admin' && (
                         <DropdownMenuItem asChild>
                           <Link href="/admin">
                             <ShieldCheck className="mr-2 h-4 w-4" />
-                            {t('admin')}
+                            Admin
                           </Link>
                         </DropdownMenuItem>
                       )}
@@ -143,22 +122,13 @@ export default function Header() {
                   <DropdownMenuItem asChild>
                     <Link href="/profile">
                       <Settings className="mr-2 h-4 w-4" />
-                      {t('profile')}
+                      Profil
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>
-                      <Globe className="mr-2 h-4 w-4" />
-                      <span>{tLang('placeholder')}</span>
-                    </DropdownMenuSubTrigger>
-                    <DropdownMenuSubContent>
-                      {languageSwitcherItems}
-                    </DropdownMenuSubContent>
-                  </DropdownMenuSub>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={logout}>
                     <LogOut className="mr-2 h-4 w-4" />
-                    {t('logout')}
+                    Abmelden
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -167,13 +137,13 @@ export default function Header() {
                 <Button asChild variant="ghost" size="sm">
                   <Link href="/login">
                     <LogIn className="md:mr-2" />
-                    <span className="hidden md:inline">{t('login')}</span>
+                    <span className="hidden md:inline">Anmelden</span>
                   </Link>
                 </Button>
                 <Button asChild size="sm">
                   <Link href="/signup">
                     <UserPlus className="md:mr-2" />
-                    <span className="hidden md:inline">{t('signUp')}</span>
+                    <span className="hidden md:inline">Registrieren</span>
                   </Link>
                 </Button>
               </div>

@@ -21,11 +21,11 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useAuth } from '@/hooks/use-auth';
-import { useRouter, Link } from '@/navigation';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512" {...props}>
@@ -34,15 +34,14 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 )
 
 export default function LoginForm() {
-  const t = useTranslations('LoginForm');
   const [isLoading, setIsLoading] = useState(false);
   const { login, loginWithGoogle } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
 
   const formSchema = z.object({
-    email: z.string().email({ message: t('emailValidation') }),
-    password: z.string().min(1, { message: t('passwordValidation') }),
+    email: z.string().email({ message: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.' }),
+    password: z.string().min(1, { message: 'Passwort ist erforderlich.' }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -59,18 +58,18 @@ export default function LoginForm() {
     setIsLoading(false);
     if (result.success && result.user) {
       toast({
-        title: t('successTitle'),
-        description: t('successDescription'),
+        title: 'Anmeldung erfolgreich',
+        description: 'Willkommen zurück!',
       });
       if (result.user.hasCompletedSetup) {
-        router.push('/dashboard');
+        router.push('/orgachart');
       } else {
         router.push('/complete-setup');
       }
     } else {
       toast({
         variant: 'destructive',
-        title: t('errorTitle'),
+        title: 'Anmeldung fehlgeschlagen',
         description: result.message,
       });
     }
@@ -82,18 +81,18 @@ export default function LoginForm() {
     setIsLoading(false);
     if (result.success && result.user) {
       toast({
-        title: t('successTitle'),
-        description: t('successDescription'),
+        title: 'Anmeldung erfolgreich',
+        description: 'Willkommen zurück!',
       });
       if (result.user.hasCompletedSetup) {
-        router.push('/dashboard');
+        router.push('/orgachart');
       } else {
         router.push('/complete-setup');
       }
     } else {
       toast({
         variant: 'destructive',
-        title: t('errorTitle'),
+        title: 'Anmeldung fehlgeschlagen',
         description: result.message,
       });
     }
@@ -102,8 +101,8 @@ export default function LoginForm() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl">{t('title')}</CardTitle>
-        <CardDescription>{t('description')}</CardDescription>
+        <CardTitle className="text-2xl">Willkommen zurück</CardTitle>
+        <CardDescription>Geben Sie Ihre Zugangsdaten ein, um auf Ihr Konto zuzugreifen.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -113,7 +112,7 @@ export default function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('emailLabel')}</FormLabel>
+                  <FormLabel>E-Mail</FormLabel>
                   <FormControl>
                     <Input placeholder="name@example.com" {...field} />
                   </FormControl>
@@ -126,7 +125,7 @@ export default function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('passwordLabel')}</FormLabel>
+                  <FormLabel>Passwort</FormLabel>
                   <FormControl>
                     <Input type="password" placeholder="••••••••" {...field} />
                   </FormControl>
@@ -136,7 +135,7 @@ export default function LoginForm() {
             />
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {t('submit')}
+              Anmelden
             </Button>
           </form>
         </Form>
@@ -147,20 +146,20 @@ export default function LoginForm() {
           </div>
           <div className="relative flex justify-center text-xs uppercase">
             <span className="bg-card px-2 text-muted-foreground">
-              {t('orContinueWith')}
+              Oder fahre fort mit
             </span>
           </div>
         </div>
 
         <Button variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={isLoading}>
            <GoogleIcon className="mr-2 h-4 w-4" />
-          {t('googleSignIn')}
+          Mit Google anmelden
         </Button>
 
         <div className="mt-4 text-center text-sm">
-          {t('noAccount')}{' '}
+          Sie haben noch kein Konto?{' '}
           <Link href="/signup" className="underline text-primary">
-            {t('signUpLink')}
+            Registrieren
           </Link>
         </div>
       </CardContent>

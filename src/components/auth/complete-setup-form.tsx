@@ -21,22 +21,20 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useAuth } from '@/hooks/use-auth';
-import { useRouter } from '@/navigation';
+import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
 export default function CompleteSetupForm() {
-  const t = useTranslations('CompleteSetupForm');
   const [isLoading, setIsLoading] = useState(false);
   const { user, completeInitialSetup } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
 
   const formSchema = z.object({
-    firstName: z.string().min(1, { message: t('firstNameValidation') }),
-    lastName: z.string().min(1, { message: t('lastNameValidation') }),
+    firstName: z.string().min(1, { message: 'Vorname ist erforderlich.' }),
+    lastName: z.string().min(1, { message: 'Nachname ist erforderlich.' }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -49,7 +47,7 @@ export default function CompleteSetupForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!user) {
-        toast({ variant: 'destructive', title: t('errorTitle'), description: t('notLoggedInError') });
+        toast({ variant: 'destructive', title: 'Fehler', description: 'Sie müssen hierfür angemeldet sein.' });
         return;
     }
     setIsLoading(true);
@@ -57,13 +55,13 @@ export default function CompleteSetupForm() {
     setIsLoading(false);
     if (result.success) {
       toast({
-        title: t('successTitle'),
+        title: 'Einrichtung abgeschlossen',
       });
-      router.push('/dashboard');
+      router.push('/orgachart');
     } else {
       toast({
         variant: 'destructive',
-        title: t('errorTitle'),
+        title: 'Fehler',
         description: result.message,
       });
     }
@@ -72,8 +70,8 @@ export default function CompleteSetupForm() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl">{t('title')}</CardTitle>
-        <CardDescription>{t('description')}</CardDescription>
+        <CardTitle className="text-2xl">Ein letzter Schritt</CardTitle>
+        <CardDescription>Bitte geben Sie Ihren Namen ein, um Ihr Konto einzurichten.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -83,9 +81,9 @@ export default function CompleteSetupForm() {
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('firstNameLabel')}</FormLabel>
+                  <FormLabel>Vorname</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('firstNamePlaceholder')} {...field} />
+                    <Input placeholder="Max" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,9 +94,9 @@ export default function CompleteSetupForm() {
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('lastNameLabel')}</FormLabel>
+                  <FormLabel>Nachname</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('lastNamePlaceholder')} {...field} />
+                    <Input placeholder="Mustermann" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -106,7 +104,7 @@ export default function CompleteSetupForm() {
             />
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {t('submit')}
+              Speichern und weiter
             </Button>
           </form>
         </Form>

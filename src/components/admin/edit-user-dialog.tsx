@@ -34,23 +34,21 @@ import { useAuth } from '@/hooks/use-auth';
 import type { User } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, UserCog } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
 type EditUserDialogProps = {
   user: User;
 };
 
 export function EditUserDialog({ user }: EditUserDialogProps) {
-  const t = useTranslations('EditUserDialog');
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { updateUserByAdmin } = useAuth();
   const { toast } = useToast();
 
   const formSchema = z.object({
-    firstName: z.string().min(1, { message: t('firstNameValidation') }),
-    lastName: z.string().min(1, { message: t('lastNameValidation') }),
-    email: z.string().email({ message: t('emailValidation') }),
+    firstName: z.string().min(1, { message: 'Vorname ist erforderlich.' }),
+    lastName: z.string().min(1, { message: 'Nachname ist erforderlich.' }),
+    email: z.string().email({ message: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.' }),
     role: z.enum(['user', 'admin']),
   });
 
@@ -83,13 +81,13 @@ export function EditUserDialog({ user }: EditUserDialogProps) {
     if (result.success) {
       setOpen(false);
       toast({
-        title: t('successTitle'),
-        description: t('successDescription', { name: `${values.firstName} ${values.lastName}` }),
+        title: 'Benutzer aktualisiert',
+        description: `Die Informationen für ${values.firstName} ${values.lastName} wurden erfolgreich aktualisiert.`,
       });
     } else {
        toast({
         variant: 'destructive',
-        title: t('errorTitle'),
+        title: 'Aktualisierung fehlgeschlagen',
         description: result.message
       });
     }
@@ -100,16 +98,14 @@ export function EditUserDialog({ user }: EditUserDialogProps) {
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
           <UserCog className="mr-2 h-4 w-4" />
-          {t('editUser')}
+          Benutzer bearbeiten
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogTitle>Benutzerinformationen bearbeiten</DialogTitle>
           <DialogDescription>
-            {t.rich('description', {
-              name: () => <span className="font-medium">{user.firstName} {user.lastName}</span>,
-            })}
+            Aktualisieren Sie die Details für <span className="font-medium">{user.firstName} {user.lastName}</span>. Klicken Sie auf 'Speichern', wenn Sie fertig sind.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -120,7 +116,7 @@ export function EditUserDialog({ user }: EditUserDialogProps) {
                 name="firstName"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>{t('firstNameLabel')}</FormLabel>
+                    <FormLabel>Vorname</FormLabel>
                     <FormControl>
                         <Input {...field} />
                     </FormControl>
@@ -133,7 +129,7 @@ export function EditUserDialog({ user }: EditUserDialogProps) {
                 name="lastName"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>{t('lastNameLabel')}</FormLabel>
+                    <FormLabel>Nachname</FormLabel>
                     <FormControl>
                         <Input {...field} />
                     </FormControl>
@@ -147,7 +143,7 @@ export function EditUserDialog({ user }: EditUserDialogProps) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('emailLabel')}</FormLabel>
+                  <FormLabel>E-Mail</FormLabel>
                   <FormControl>
                     <Input {...field} disabled />
                   </FormControl>
@@ -160,7 +156,7 @@ export function EditUserDialog({ user }: EditUserDialogProps) {
               name="role"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('roleLabel')}</FormLabel>
+                  <FormLabel>Rolle</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -168,8 +164,8 @@ export function EditUserDialog({ user }: EditUserDialogProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="user">{t('roleUser')}</SelectItem>
-                      <SelectItem value="admin">{t('roleAdmin')}</SelectItem>
+                      <SelectItem value="user">Benutzer</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -179,7 +175,7 @@ export function EditUserDialog({ user }: EditUserDialogProps) {
             <DialogFooter className="pt-4">
               <Button type="submit" disabled={isLoading || !form.formState.isDirty}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {t('save')}
+                Änderungen speichern
               </Button>
             </DialogFooter>
           </form>

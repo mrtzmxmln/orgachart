@@ -11,7 +11,6 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { AssignIframeDialog } from './assign-iframe-dialog';
 import { Card } from '../ui/card';
-import { useTranslations } from 'next-intl';
 import { EditUserDialog } from './edit-user-dialog';
 import { Skeleton } from '../ui/skeleton';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
@@ -19,7 +18,6 @@ import { collection } from 'firebase/firestore';
 import type { User } from '@/lib/data';
 
 export function UserTable() {
-  const t = useTranslations('UserTable');
   const firestore = useFirestore();
   const usersColRef = useMemoFirebase(() => collection(firestore, 'users'), [firestore]);
   const { data: allUsers, isLoading: isUsersLoading } = useCollection<User>(usersColRef);
@@ -30,10 +28,10 @@ export function UserTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t('user')}</TableHead>
-              <TableHead>{t('role')}</TableHead>
-              <TableHead>{t('chartUrl')}</TableHead>
-              <TableHead className="text-right">{t('actions')}</TableHead>
+              <TableHead>Benutzer</TableHead>
+              <TableHead>Rolle</TableHead>
+              <TableHead>OrgaChart-URL</TableHead>
+              <TableHead className="text-right">Aktionen</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -56,10 +54,10 @@ export function UserTable() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t('user')}</TableHead>
-            <TableHead>{t('role')}</TableHead>
-            <TableHead>{t('chartUrl')}</TableHead>
-            <TableHead className="text-right">{t('actions')}</TableHead>
+            <TableHead>Benutzer</TableHead>
+            <TableHead>Rolle</TableHead>
+            <TableHead>OrgaChart-URL</TableHead>
+            <TableHead className="text-right">Aktionen</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -85,7 +83,7 @@ export function UserTable() {
                     {user.iframeUrl}
                   </a>
                 ) : (
-                  <span className="text-muted-foreground">{t('notSet')}</span>
+                  <span className="text-muted-foreground">Nicht festgelegt</span>
                 )}
               </TableCell>
               <TableCell className="text-right">

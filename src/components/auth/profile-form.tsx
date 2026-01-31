@@ -34,7 +34,6 @@ import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512" fill="currentColor" {...props}>
@@ -43,7 +42,6 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 )
 
 export default function ProfileForm() {
-  const t = useTranslations('ProfileForm');
   const [isLoading, setIsLoading] = useState(false);
   const [isUnlinkAlertOpen, setIsUnlinkAlertOpen] = useState(false);
   const [isUnlinking, setIsUnlinking] = useState(false);
@@ -52,9 +50,9 @@ export default function ProfileForm() {
   const { toast } = useToast();
 
   const formSchema = z.object({
-    firstName: z.string().min(1, { message: t('firstNameValidation') }),
-    lastName: z.string().min(1, { message: t('lastNameValidation') }),
-    email: z.string().email({ message: t('emailValidation') }),
+    firstName: z.string().min(1, { message: 'Vorname ist erforderlich.' }),
+    lastName: z.string().min(1, { message: 'Nachname ist erforderlich.' }),
+    email: z.string().email({ message: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.' }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -78,7 +76,7 @@ export default function ProfileForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!user) {
-        toast({ variant: 'destructive', title: t('errorTitle'), description: t('notLoggedInError') });
+        toast({ variant: 'destructive', title: 'Aktualisierung fehlgeschlagen', description: 'Sie müssen hierfür angemeldet sein.' });
         return;
     }
     setIsLoading(true);
@@ -87,14 +85,14 @@ export default function ProfileForm() {
 
     if (result.success) {
       toast({
-        title: t('successTitle'),
-        description: t('successDescription'),
+        title: 'Profil aktualisiert',
+        description: 'Ihre Informationen wurden erfolgreich aktualisiert.',
       });
       form.reset(values); // to update the form's "dirty" state
     } else {
       toast({
         variant: 'destructive',
-        title: t('errorTitle'),
+        title: 'Aktualisierung fehlgeschlagen',
         description: result.message,
       });
     }
@@ -108,13 +106,13 @@ export default function ProfileForm() {
 
     if (result.success) {
       toast({
-        title: t('unlinkSuccessTitle'),
-        description: t('unlinkSuccessDescription'),
+        title: 'Konto getrennt',
+        description: 'Ihr Google-Konto wurde erfolgreich getrennt.',
       });
     } else {
       toast({
         variant: 'destructive',
-        title: t('errorTitle'),
+        title: 'Aktualisierung fehlgeschlagen',
         description: result.message,
       });
     }
@@ -128,13 +126,13 @@ export default function ProfileForm() {
 
     if (result.success) {
       toast({
-        title: t('linkSuccessTitle'),
-        description: t('linkSuccessDescription'),
+        title: 'Konto verknüpft',
+        description: 'Ihr Google-Konto wurde erfolgreich verknüpft.',
       });
     } else {
       toast({
         variant: 'destructive',
-        title: t('errorTitle'),
+        title: 'Aktualisierung fehlgeschlagen',
         description: result.message,
       });
     }
@@ -147,7 +145,7 @@ export default function ProfileForm() {
         <form onSubmit={form.handleSubmit(onSubmit)}>
             <Card>
                 <CardHeader>
-                    <CardTitle>{t('title')}</CardTitle>
+                    <CardTitle>Ihre Informationen</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6 pt-6">
                     <div className="grid sm:grid-cols-2 gap-4">
@@ -156,9 +154,9 @@ export default function ProfileForm() {
                         name="firstName"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel>{t('firstNameLabel')}</FormLabel>
+                            <FormLabel>Vorname</FormLabel>
                             <FormControl>
-                                <Input placeholder={t('firstNamePlaceholder')} {...field} />
+                                <Input placeholder="Max" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -169,9 +167,9 @@ export default function ProfileForm() {
                         name="lastName"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel>{t('lastNameLabel')}</FormLabel>
+                            <FormLabel>Nachname</FormLabel>
                             <FormControl>
-                                <Input placeholder={t('lastNamePlaceholder')} {...field} />
+                                <Input placeholder="Mustermann" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -183,7 +181,7 @@ export default function ProfileForm() {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>{t('emailLabel')}</FormLabel>
+                        <FormLabel>E-Mail-Adresse</FormLabel>
                         <FormControl>
                             <Input placeholder="name@example.com" {...field} disabled />
                         </FormControl>
@@ -195,7 +193,7 @@ export default function ProfileForm() {
                 <CardFooter className="border-t px-6 py-4">
                     <Button type="submit" disabled={isLoading || !form.formState.isDirty}>
                         {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        {t('submit')}
+                        Änderungen speichern
                     </Button>
                 </CardFooter>
             </Card>
@@ -204,7 +202,7 @@ export default function ProfileForm() {
 
     <Card className="mt-6">
         <CardHeader>
-            <CardTitle>{t('linkedAccountsTitle')}</CardTitle>
+            <CardTitle>Verknüpfte Konten</CardTitle>
         </CardHeader>
         <CardContent>
             <div className="flex items-center justify-between p-4 border rounded-lg bg-card">
@@ -218,18 +216,18 @@ export default function ProfileForm() {
                     ) : (
                       <div className="flex flex-col">
                         <span className="font-medium">Google</span>
-                        <span className="text-sm text-muted-foreground">{t('notLinked')}</span>
+                        <span className="text-sm text-muted-foreground">Nicht verknüpft</span>
                       </div>
                     )}
                 </div>
                 {googleProvider ? (
                   <Button variant="outline" onClick={() => setIsUnlinkAlertOpen(true)} disabled={isUnlinking}>
-                      {t('unlink')}
+                      Trennen
                   </Button>
                 ) : (
                   <Button variant="outline" onClick={handleLinkGoogle} disabled={isLinking}>
                       {isLinking && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                      {t('linkAccount')}
+                      Konto verknüpfen
                   </Button>
                 )}
             </div>
@@ -239,16 +237,16 @@ export default function ProfileForm() {
     <AlertDialog open={isUnlinkAlertOpen} onOpenChange={setIsUnlinkAlertOpen}>
       <AlertDialogContent>
           <AlertDialogHeader>
-          <AlertDialogTitle>{t('unlinkConfirmTitle')}</AlertDialogTitle>
+          <AlertDialogTitle>Google-Konto trennen?</AlertDialogTitle>
           <AlertDialogDescription>
-              {t('unlinkConfirmDescription')}
+              Dies entfernt Google als Anmeldemethode. Wenn Sie für dieses Konto kein Passwort festgelegt haben, müssen Sie den 'Passwort vergessen'-Vorgang verwenden, um sich anzumelden.
           </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-          <AlertDialogCancel disabled={isUnlinking}>{t('unlinkCancel')}</AlertDialogCancel>
+          <AlertDialogCancel disabled={isUnlinking}>Abbrechen</AlertDialogCancel>
           <AlertDialogAction onClick={handleUnlinkGoogle} disabled={isUnlinking}>
               {isUnlinking && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {t('unlinkContinue')}
+              Trennen
           </AlertDialogAction>
           </AlertDialogFooter>
       </AlertDialogContent>
