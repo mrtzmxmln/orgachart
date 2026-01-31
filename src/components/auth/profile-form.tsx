@@ -112,7 +112,6 @@ export default function ProfileForm() {
         title: 'Konto getrennt',
         description: 'Ihr Google-Konto wurde erfolgreich getrennt.',
       });
-      router.refresh();
     } else {
       toast({
         variant: 'destructive',
@@ -132,7 +131,6 @@ export default function ProfileForm() {
         title: 'Konto verknüpft',
         description: 'Ihr Google-Konto wurde erfolgreich verknüpft.',
       });
-      router.refresh();
     } else {
       toast({
         variant: 'destructive',
