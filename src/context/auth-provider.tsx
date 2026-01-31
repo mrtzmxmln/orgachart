@@ -73,6 +73,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return 'Dieser Vorgang ist sensibel und erfordert eine kürzliche Authentifizierung. Bitte melden Sie sich erneut an, bevor Sie es erneut versuchen.'
       case 'auth/credential-already-in-use':
         return 'Dieses Google-Konto ist bereits mit einem anderen Benutzer verknüpft.';
+      case 'auth/unauthorized-domain':
+        return 'Diese Domain ist nicht für die Authentifizierung autorisiert. Fügen Sie sie in den Firebase-Konsoleneinstellungen hinzu.';
       default:
         return 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.';
     }

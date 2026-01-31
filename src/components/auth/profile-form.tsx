@@ -34,6 +34,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512" fill="currentColor" {...props}>
@@ -48,6 +49,7 @@ export default function ProfileForm() {
   const [isLinking, setIsLinking] = useState(false);
   const { user, updateUserProfile, unlinkGoogleProvider, linkGoogleProvider } = useAuth();
   const { toast } = useToast();
+  const router = useRouter();
 
   const formSchema = z.object({
     firstName: z.string().min(1, { message: 'Vorname ist erforderlich.' }),
@@ -103,12 +105,14 @@ export default function ProfileForm() {
   async function handleUnlinkGoogle() {
     setIsUnlinking(true);
     const result = await unlinkGoogleProvider();
+    setIsUnlinkAlertOpen(false);
 
     if (result.success) {
       toast({
         title: 'Konto getrennt',
         description: 'Ihr Google-Konto wurde erfolgreich getrennt.',
       });
+      router.refresh();
     } else {
       toast({
         variant: 'destructive',
@@ -117,7 +121,6 @@ export default function ProfileForm() {
       });
     }
     setIsUnlinking(false);
-    setIsUnlinkAlertOpen(false);
   }
 
   async function handleLinkGoogle() {
@@ -129,6 +132,7 @@ export default function ProfileForm() {
         title: 'Konto verknüpft',
         description: 'Ihr Google-Konto wurde erfolgreich verknüpft.',
       });
+      router.refresh();
     } else {
       toast({
         variant: 'destructive',
