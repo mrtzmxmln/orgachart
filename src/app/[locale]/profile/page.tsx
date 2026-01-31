@@ -1,13 +1,11 @@
 'use client';
 import ProfileForm from '@/components/auth/profile-form';
 import { useAuth } from '@/hooks/use-auth';
-import { useRouter } from '@/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useTranslations } from 'next-intl';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ProfilePage() {
-  const t = useTranslations('ProfilePage');
   const { user, isAuthLoading } = useAuth();
   const router = useRouter();
 
@@ -32,8 +30,8 @@ export default function ProfilePage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-3xl">
       <div className="space-y-4 mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
-        <p className="text-muted-foreground">{t('description')}</p>
+        <h1 className="text-3xl font-bold tracking-tight">Profileinstellungen</h1>
+        <p className="text-muted-foreground">Verwalten Sie Ihre Kontoeinstellungen und persönlichen Informationen.</p>
       </div>
       <ProfileForm />
     </div>

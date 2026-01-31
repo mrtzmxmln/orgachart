@@ -2,7 +2,7 @@
 
 import CompleteSetupForm from '@/components/auth/complete-setup-form';
 import { useAuth } from '@/hooks/use-auth';
-import { useRouter } from '@/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -15,7 +15,7 @@ export default function CompleteSetupPage() {
       if (user === null) {
         router.replace('/login');
       } else if (user && user.hasCompletedSetup) {
-        router.replace('/dashboard');
+        router.replace('/orgachart');
       }
     }
   }, [user, isAuthLoading, router]);

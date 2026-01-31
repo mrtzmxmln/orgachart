@@ -1,16 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from '@/navigation';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
 import { UserTable } from '@/components/admin/user-table';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertCircle, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useTranslations } from 'next-intl';
 
 export default function AdminPage() {
-  const t = useTranslations('Admin');
   const { user, isAuthLoading } = useAuth();
   const router = useRouter();
 
@@ -19,7 +16,7 @@ export default function AdminPage() {
       if (user === null) {
         router.push('/login');
       } else if (user.role !== 'admin') {
-        router.push('/dashboard');
+        router.push('/orgachart');
       }
     }
   }, [user, isAuthLoading, router]);
@@ -41,9 +38,9 @@ export default function AdminPage() {
       <div className="space-y-4 mb-8">
         <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
           <ShieldCheck className="h-8 w-8 text-primary" />
-          {t('title')}
+          Admin-Bereich
         </h1>
-        <p className="text-muted-foreground">{t('description')}</p>
+        <p className="text-muted-foreground">Verwalten Sie Benutzer und deren Diagrammzuweisungen.</p>
       </div>
 
       <UserTable />

@@ -1,16 +1,12 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-
 export default function ImprintPage() {
-  const t = useTranslations('ImprintPage');
-
   return (
     <div className="container mx-auto max-w-3xl py-12 px-4 sm:px-6 lg:px-8">
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Impressum</h1>
         <div className="prose prose-lg text-muted-foreground max-w-none">
-          <h2 className="text-xl font-semibold text-foreground">{t('responsibleTitle')}</h2>
+          <h2 className="text-xl font-semibold text-foreground">Angaben gemäß § 5 TMG</h2>
           <p>
             Organic Concepts GmbH
             <br />
@@ -20,27 +16,27 @@ export default function ImprintPage() {
             Deutschland
           </p>
 
-          <h2 className="text-xl font-semibold text-foreground">{t('contactTitle')}</h2>
+          <h2 className="text-xl font-semibold text-foreground">Kontakt</h2>
           <p>
-            {t('phone')}: +49 (0) 80 33 / 30 89 8 - 0<br />
+            Telefon: +49 (0) 80 33 / 30 89 8 - 0<br />
             E-Mail: info@organicconcepts.de
           </p>
 
-          <h2 className="text-xl font-semibold text-foreground">{t('representationTitle')}</h2>
+          <h2 className="text-xl font-semibold text-foreground">Vertreten durch</h2>
           <p>
-            {t('representedBy')}: Moritz Bauer
+            Vertreten durch: Moritz Bauer
           </p>
 
-          <h2 className="text-xl font-semibold text-foreground">{t('registerTitle')}</h2>
+          <h2 className="text-xl font-semibold text-foreground">Registereintrag</h2>
           <p>
-            {t('registerCourt')}: Amtsgericht Traunstein
+            Registergericht: Amtsgericht Traunstein
             <br />
-            {t('registrationNumber')}: HRB 24850
+            Registernummer: HRB 24850
           </p>
 
-          <h2 className="text-xl font-semibold text-foreground">{t('vatTitle')}</h2>
+          <h2 className="text-xl font-semibold text-foreground">Umsatzsteuer-ID</h2>
           <p>
-            {t('vatId')}: DE305331654
+            Umsatzsteuer-Identifikationsnummer gemäß §27a Umsatzsteuergesetz: DE305331654
           </p>
         </div>
       </div>

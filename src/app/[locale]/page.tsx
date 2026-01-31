@@ -1,15 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { Link } from '@/navigation';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { useTranslations } from 'next-intl';
 import { useAuth } from '@/hooks/use-auth';
 
 export default function Home() {
-  const t = useTranslations('Home');
   const { user } = useAuth();
   const heroImage = PlaceHolderImages.find((img) => img.id === 'hero');
 
@@ -18,21 +16,21 @@ export default function Home() {
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-headline font-bold tracking-tighter text-primary">
-            {t('title')}
+            Visualisieren Sie Ihre Organisation
           </h1>
-          <p className="text-lg text-muted-foreground">{t('subtitle')}</p>
+          <p className="text-lg text-muted-foreground">OrgaChart bietet eine einfache und leistungsstarke Lösung zum Erstellen und Verwalten von Organigrammen für Ihr Team. Sicher, skalierbar und einfach zu bedienen.</p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             {user ? (
               <Button asChild size="lg">
-                <Link href="/dashboard">{t('accessOrgaChart')}</Link>
+                <Link href="/orgachart">Zum OrgaChart</Link>
               </Button>
             ) : (
               <>
                 <Button asChild size="lg">
-                  <Link href="/signup">{t('getStarted')}</Link>
+                  <Link href="/signup">Kostenlos loslegen</Link>
                 </Button>
                 <Button asChild variant="secondary" size="lg">
-                  <Link href="/login">{t('accessOrgaChart')}</Link>
+                  <Link href="/login">Zum OrgaChart</Link>
                 </Button>
               </>
             )}
