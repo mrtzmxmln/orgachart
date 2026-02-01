@@ -102,7 +102,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       prompt: 'select_account'
     });
     try {
-      auth.authDomain = firebaseConfig.authDomain;
       const result = await signInWithPopup(auth, provider);
       const gUser = result.user;
       const userDocRef = doc(firestore, 'users', gUser.uid);
@@ -240,7 +239,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     try {
-      auth.authDomain = firebaseConfig.authDomain;
       await linkWithPopup(auth.currentUser, provider);
       return { success: true, message: 'Google account linked successfully.' };
     } catch (error: any) {
